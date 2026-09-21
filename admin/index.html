@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <div class="toast" id="toast">Posted</div>
+
+  <div class="mobile-topbar">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open settings">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="settings-backdrop" id="settingsBackdrop"></div>
+
+  <div class="admin-topbar">
+    <button class="logout-btn" id="logoutBtn">Log out</button>
+  </div>
+
+  <div class="page admin-page">
+    <div class="admin-shell">
+      <div class="admin-main">
+        <div class="composer-card">
+          <div class="composer-top">
+            <img class="composer-avatar" id="composerAvatar" src="" alt="" />
+            <div class="category-select">
+              <select id="categorySelect">
+                <option value="tweets">#tweets</option>
+                <option value="media">#media</option>
+                <option value="case_studies">#case_studies</option>
+                <option value="activities">#activities</option>
+              </select>
+              <span id="categoryChevron"></span>
+            </div>
+          </div>
+
+          <textarea class="composer-textarea" id="composerText" placeholder="What do you want to post?" rows="3"></textarea>
+
+          <div class="composer-media-preview" id="mediaPreview"></div>
+
+          <div class="composer-tools">
+            <label title="Add image">
+              <input type="file" accept="image/*" id="imageInput" multiple hidden />
+              <span id="imageIcon"></span>
+            </label>
+            <label title="Add GIF">
+              <input type="file" accept="image/gif" id="gifInput" hidden />
+              <span id="gifIcon"></span>
+            </label>
+            <label title="Add video">
+              <input type="file" accept="video/*" id="videoInput" hidden />
+              <span id="videoIcon"></span>
+            </label>
+            <div id="emojiTrigger" title="Add emoji" style="cursor:pointer; position:relative;">
+              <span id="emojiIcon"></span>
+              <emoji-picker id="emojiPicker" class="emoji-picker-popup" style="display:none;" data-source="https://cdn.jsdelivr.net/npm/emoji-picker-element-data@latest/en/emojibase/data.json"></emoji-picker>
+            </div>
+          </div>
+
+          <div class="composer-footer">
+            <span class="composer-hint" id="mediaHint">Up to 5MB per file, 25MB total per post</span>
+            <div class="composer-actions">
+              <button class="btn btn-ghost" id="cancelEditBtn" style="display:none;">Cancel</button>
+              <button class="btn btn-ghost" id="draftBtn">Save Draft</button>
+              <button class="btn btn-primary" id="publishBtn">Post</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs" style="border:1px solid var(--border); border-top:none; padding:16px 24px 0;" id="adminTabs">
+          <button class="tab active" data-cat="all">All</button>
+          <button class="tab" data-cat="tweets">Tweets</button>
+          <button class="tab" data-cat="media">Media</button>
+          <button class="tab" data-cat="case_studies">Case Studies</button>
+          <button class="tab" data-cat="activities">Activities</button>
+        </div>
+
+        <div id="adminPosts" style="width:100%; display:flex; flex-direction:column; gap:1px;"></div>
+      </div>
+
+      <aside class="admin-sidebar" id="settingsPanel">
+        <button class="settings-close-btn" id="settingsCloseBtn" aria-label="Close settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <h3>Profile</h3>
+        <div class="field"><label>Name</label><input type="text" id="setName" /></div>
+        <div class="field"><label>Tagline</label><input type="text" id="setTagline" /></div>
+        <div class="field"><label>Avatar URL</label><input type="text" id="setAvatar" /></div>
+        <div class="field"><label>Banner image URL</label><input type="text" id="setBanner" /></div>
+        <div class="field"><label>Website label</label><input type="text" id="setWebsiteLabel" /></div>
+        <div class="field"><label>Website URL</label><input type="url" id="setWebsiteUrl" /></div>
+        <div class="field"><label>LinkedIn handle</label><input type="text" id="setLinkedinHandle" /></div>
+        <div class="field"><label>LinkedIn URL</label><input type="url" id="setLinkedinUrl" /></div>
+        <div class="field"><label>Instagram handle</label><input type="text" id="setInstagramHandle" /></div>
+        <div class="field"><label>Instagram URL</label><input type="url" id="setInstagramUrl" /></div>
+
+        <h3>Theme</h3>
+        <div class="field"><label>Accent color (links, badge, CTA)</label><input type="color" id="setAccent" /></div>
+
+        <h3>CTA buttons</h3>
+        <div class="field"><label>Primary label</label><input type="text" id="setCtaHireLabel" /></div>
+        <div class="field"><label>Primary URL</label><input type="url" id="setCtaHireUrl" /></div>
+        <div class="field"><label>Secondary label</label><input type="text" id="setCtaResumeLabel" /></div>
+        <div class="field"><label>Secondary URL</label><input type="url" id="setCtaResumeUrl" /></div>
+
+        <button class="btn btn-primary" id="saveSettingsBtn">Save changes</button>
+      </aside>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1/index.js"></script>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/supabaseClient.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>

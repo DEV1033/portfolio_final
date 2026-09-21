@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <p class="login-label">Enter Passkey</p>
+    <div class="passkey-row" id="passkeyRow">
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="0" />
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="1" />
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="2" />
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="3" />
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="4" />
+      <input class="passkey-box" type="password" inputmode="text" maxlength="1" data-idx="5" />
+    </div>
+    <p class="login-error" id="loginError"></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/supabaseClient.js"></script>
+  <script src="../assets/js/login.js"></script>
+</body>
+</html>

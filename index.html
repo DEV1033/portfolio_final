@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev Chaudhary</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="cta-bar" id="ctaBar"></div>
+
+  <div class="page">
+    <div class="layout">
+      <nav class="nav">
+        <a href="#" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
+      </nav>
+
+      <div class="feed">
+        <div class="card profile-card" id="profileCard">
+          <div class="profile-header" id="profileHeader">
+            <img class="profile-banner" id="bannerImg" src="" alt="" hidden />
+            <div class="avatar-wrap" id="avatarWrap">
+              <img class="avatar" id="avatarImg" src="" alt="" />
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="profile-name-row">
+              <div class="name-line">
+                <span class="name" id="profileName">Dev Chaudhary</span>
+                <span id="verifiedIcon"></span>
+              </div>
+              <p class="tagline" id="profileTagline"></p>
+            </div>
+            <div class="website-row" id="websiteRow"></div>
+            <div class="tags-row" id="socialRow"></div>
+          </div>
+        </div>
+
+        <div class="tabs" id="tabs" style="border:1px solid var(--border); border-top:none; padding:16px 24px 0;">
+          <button class="tab active" data-cat="all">All</button>
+          <button class="tab" data-cat="tweets">Tweets</button>
+          <button class="tab" data-cat="media">Media</button>
+          <button class="tab" data-cat="case_studies">Case Studies</button>
+          <button class="tab" data-cat="activities">Activities</button>
+        </div>
+
+        <div id="postsContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="#" class="active">Home</a>
+    <a href="#about">About</a>
+    <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
+  </nav>
+
+  <div class="resume-sidebar-backdrop" id="resumeSidebarBackdrop"></div>
+  <aside class="resume-sidebar" id="resumeSidebar">
+    <div class="resume-sidebar-bar">
+      <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" target="_blank" rel="noopener">Open in new tab</a>
+      <button class="resume-sidebar-close" id="resumeSidebarClose" aria-label="Close"></button>
+    </div>
+    <iframe class="resume-sidebar-frame" id="resumeSidebarFrame" title="Resume"></iframe>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/supabaseClient.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/user.js"></script>
+</body>
+</html>
