@@ -31,7 +31,7 @@ document.getElementById("categoryChevron").innerHTML = svgIcon("chevron");
 (async function guard() {
   const { data } = await window.sb.auth.getSession();
   if (!data.session) {
-    window.location.href = "/login";
+    window.location.href = "/admin/login";
     return;
   }
   init();
@@ -39,7 +39,7 @@ document.getElementById("categoryChevron").innerHTML = svgIcon("chevron");
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
   await window.sb.auth.signOut();
-  window.location.href = "/login";
+  window.location.href = "/admin/login";
 });
 
 // ---------- off-canvas settings panel (mobile/tablet) ----------
