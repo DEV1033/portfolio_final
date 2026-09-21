@@ -38,7 +38,7 @@ document.getElementById("categoryChevron").innerHTML = svgIcon("chevron");
 })();
 
 document.getElementById("logoutBtn").addEventListener("click", async () => {
-  await window.sb.auth.signOut();
+  await window.sb.auth.signOut({ scope: "global" });
   window.location.href = "/admin/login";
 });
 
