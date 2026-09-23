@@ -200,6 +200,8 @@ function hidePreloader() {
   el.addEventListener("transitionend", () => el.remove(), { once: true });
 }
 
+renderGithubGraph("DEV1033", document.getElementById("githubGraph"));
+
 (async function init() {
   try {
     animatePreloaderTo(15);

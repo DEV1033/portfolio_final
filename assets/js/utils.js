@@ -284,6 +284,61 @@ function wireMediaGalleries(container) {
   });
 }
 
+const GH_MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const GH_DAY_LABELS = { 1: "Mon", 3: "Wed", 5: "Fri" };
+
+// Renders our own GitHub contribution heatmap (instead of embedding a
+// third-party image) so the empty-day cells can be styled to sit quietly in
+// the dark theme, and the grid can stretch to fill its container with real
+// day/month labels like GitHub's own graph.
+async function renderGithubGraph(username, container) {
+  try {
+    const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
+    if (!res.ok) throw new Error("bad response");
+    const data = await res.json();
+    const days = data.contributions || [];
+    if (days.length === 0) throw new Error("no data");
+
+    // Pad the front so the grid's first column starts on a Sunday, matching
+    // GitHub's own week columns (Sun top, Sat bottom).
+    const firstDow = new Date(`${days[0].date}T00:00:00`).getDay();
+    const padded = [...Array(firstDow).fill(null), ...days];
+    const weeks = Math.ceil(padded.length / 7);
+
+    let lastMonth = -1;
+    const monthLabels = [];
+    for (let w = 0; w < weeks; w++) {
+      const firstRealDay = padded.slice(w * 7, w * 7 + 7).find(Boolean);
+      if (!firstRealDay) continue;
+      const month = new Date(`${firstRealDay.date}T00:00:00`).getMonth();
+      if (month !== lastMonth) {
+        monthLabels.push(`<span style="grid-column:${w + 1}">${GH_MONTH_LABELS[month]}</span>`);
+        lastMonth = month;
+      }
+    }
+
+    const cells = padded
+      .map((d) =>
+        d
+          ? `<div class="gh-cell" data-level="${d.level}" title="${d.count} contributions on ${d.date}"></div>`
+          : `<div class="gh-cell gh-cell-empty"></div>`
+      )
+      .join("");
+
+    const dayLabels = [0, 1, 2, 3, 4, 5, 6].map((i) => `<span>${GH_DAY_LABELS[i] || ""}</span>`).join("");
+
+    container.innerHTML = `
+      <div class="gh-graph-days">${dayLabels}</div>
+      <div class="gh-graph-body">
+        <div class="gh-graph-months" style="grid-template-columns:repeat(${weeks}, 1fr)">${monthLabels.join("")}</div>
+        <div class="gh-graph-grid" style="grid-template-columns:repeat(${weeks}, 1fr); aspect-ratio:${weeks} / 7">${cells}</div>
+      </div>
+    `;
+  } catch {
+    container.remove();
+  }
+}
+
 function svgIcon(name) {
   const icons = {
     verified: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.01 2.011C12.7878 2.01105 13.5389 2.29437 14.123 2.808L14.277 2.953L14.975 3.651C15.1666 3.84131 15.4167 3.96145 15.685 3.992L15.82 4H16.82C17.6372 3.99995 18.4235 4.31257 19.0176 4.87374C19.6116 5.43491 19.9685 6.20211 20.015 7.018L20.02 7.2V8.2C20.02 8.47 20.112 8.733 20.278 8.943L20.368 9.043L21.065 9.741C21.6427 10.3154 21.9796 11.0886 22.0069 11.9029C22.0342 12.7171 21.7499 13.5111 21.212 14.123L21.067 14.277L20.369 14.975C20.1787 15.1666 20.0585 15.4167 20.028 15.685L20.02 15.82V16.82C20.02 17.6372 19.7074 18.4235 19.1463 19.0176C18.5851 19.6116 17.8179 19.9685 17.002 20.015L16.82 20.02H15.82C15.5504 20.0201 15.2886 20.111 15.077 20.278L14.977 20.368L14.279 21.065C13.7046 21.6427 12.9314 21.9796 12.1171 22.0069C11.3029 22.0342 10.5089 21.7499 9.897 21.212L9.743 21.067L9.045 20.369C8.85344 20.1787 8.60329 20.0585 8.335 20.028L8.2 20.02H7.2C6.38278 20.02 5.59651 19.7074 5.00243 19.1463C4.40835 18.5851 4.05148 17.8179 4.005 17.002L4 16.82V15.82C3.99991 15.5504 3.90903 15.2886 3.742 15.077L3.652 14.977L2.955 14.279C2.37728 13.7046 2.04042 12.9314 2.01311 12.1171C1.98579 11.3029 2.27008 10.5089 2.808 9.897L2.953 9.743L3.651 9.045C3.84131 8.85344 3.96145 8.60329 3.992 8.335L4 8.2V7.2L4.005 7.018C4.04965 6.23345 4.38143 5.49275 4.93709 4.93709C5.49275 4.38143 6.23345 4.04965 7.018 4.005L7.2 4H8.2C8.46962 3.99991 8.73135 3.90903 8.943 3.742L9.043 3.652L9.741 2.955C10.0383 2.65589 10.3919 2.41851 10.7813 2.2565C11.1707 2.09449 11.5882 2.01106 12.01 2.011ZM15.707 9.293C15.5195 9.10553 15.2652 9.00021 15 9.00021C14.7348 9.00021 14.4805 9.10553 14.293 9.293L11 12.585L9.707 11.293L9.613 11.21C9.41201 11.0546 9.1594 10.9815 8.90647 11.0056C8.65355 11.0297 8.41928 11.1492 8.25125 11.3397C8.08321 11.5303 7.99402 11.7777 8.00177 12.0316C8.00953 12.2856 8.11365 12.527 8.293 12.707L10.293 14.707L10.387 14.79C10.5794 14.9393 10.8197 15.0132 11.0627 14.9979C11.3057 14.9826 11.5348 14.8792 11.707 14.707L15.707 10.707L15.79 10.613C15.9393 10.4206 16.0132 10.1803 15.9979 9.93732C15.9826 9.69429 15.8792 9.46519 15.707 9.293Z" fill="var(--accent)"/></svg>`,
