@@ -33,12 +33,14 @@ function applyAccentColor(hex) {
   document.documentElement.style.setProperty("--accent", hex);
 }
 
-// Resolves once every img/video currently in the DOM has loaded (or errored),
-// or after timeoutMs — whichever comes first, so a slow/lazy/broken asset can
-// never hang the preloader indefinitely. Calls onProgress(done, total) as each
-// element settles so callers can drive a percentage indicator.
-function waitForMediaReady(onProgress, timeoutMs = 3500) {
-  const els = Array.from(document.querySelectorAll("img[src], video[src]"));
+// Resolves once every img/video within `scopeEls` has loaded (or errored), or
+// after timeoutMs — whichever comes first, so a slow/broken asset can never
+// hang the preloader indefinitely. Only pass the elements actually visible at
+// load (profile card + first post) — lazy-loaded media further down the feed
+// hasn't started downloading yet and would otherwise always eat the timeout.
+// Calls onProgress(done, total) as each element settles for a progress UI.
+function waitForMediaReady(onProgress, scopeEls, timeoutMs = 6000) {
+  const els = scopeEls.flatMap((scope) => Array.from(scope.querySelectorAll("img[src], video[src]")));
   const total = els.length;
   let done = 0;
 
@@ -78,20 +80,23 @@ function waitForMediaReady(onProgress, timeoutMs = 3500) {
   return Promise.race([allReady, timeout]);
 }
 
-function mediaTag(m) {
+function mediaTag(m, eager) {
   return m.media_type === "video"
     ? `<video src="${escapeHtml(m.url)}" autoplay muted loop playsinline></video>`
-    : `<img src="${escapeHtml(m.url)}" alt="" loading="lazy" />`;
+    : `<img src="${escapeHtml(m.url)}" alt="" ${eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} />`;
 }
 
-function renderMediaHtml(media) {
+// `eager`: true for the first post only — its media is above the fold at
+// load, so it should start downloading immediately instead of waiting for
+// the lazy-load trigger, and it's the only feed media the preloader waits on.
+function renderMediaHtml(media, eager) {
   if (!media || media.length === 0) return "";
 
   const sorted = [...media].sort((a, b) => a.position - b.position);
   const mediaJson = JSON.stringify(sorted.map((m) => ({ url: m.url, media_type: m.media_type })));
 
   if (sorted.length === 1) {
-    return `<div class="post-media-single" data-media='${mediaJson}'>${mediaTag(sorted[0])}</div>`;
+    return `<div class="post-media-single" data-media='${mediaJson}'>${mediaTag(sorted[0], eager)}</div>`;
   }
 
   const visible = sorted.slice(0, 4);
@@ -100,7 +105,7 @@ function renderMediaHtml(media) {
   const cells = visible
     .map((m, i) => {
       const overlay = i === visible.length - 1 && extraCount > 0 ? `<div class="media-grid-more">+${extraCount}</div>` : "";
-      return `<div class="media-grid-cell" data-index="${i}">${mediaTag(m)}${overlay}</div>`;
+      return `<div class="media-grid-cell" data-index="${i}">${mediaTag(m, eager)}${overlay}</div>`;
     })
     .join("");
 

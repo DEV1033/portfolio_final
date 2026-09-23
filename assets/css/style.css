@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600&display=swap");
 
 :root {
   --accent: #01a73b;
@@ -21,7 +21,7 @@ body {
   padding: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", sans-serif;
+  font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }

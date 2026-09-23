@@ -49,9 +49,9 @@ async function loadSettings() {
   }
 }
 
-function renderPost(post) {
+function renderPost(post, eager) {
   const media = post.post_media || [];
-  const mediaHtml = renderMediaHtml(media);
+  const mediaHtml = renderMediaHtml(media, eager);
 
   const verifiedBadge = post.verified ? svgIcon("verified") : "";
 
@@ -115,7 +115,7 @@ async function loadPosts() {
     return;
   }
 
-  container.innerHTML = data.map(renderPost).join("");
+  container.innerHTML = data.map((post, i) => renderPost(post, i === 0)).join("");
   wireShowMore(container);
   wireMediaGalleries(container);
 }
@@ -207,9 +207,12 @@ function hidePreloader() {
     animatePreloaderTo(40);
     await loadPosts();
     animatePreloaderTo(70);
+    const preloadScope = [document.getElementById("profileCard"), document.querySelector("#postsContainer > .post:first-child")].filter(
+      Boolean
+    );
     await waitForMediaReady((done, total) => {
       animatePreloaderTo(70 + Math.round((done / total) * 25));
-    });
+    }, preloadScope);
     await animatePreloaderTo(100);
   } finally {
     setTimeout(hidePreloader, 250);
