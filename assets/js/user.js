@@ -171,9 +171,49 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && resumeSidebar.classList.contains("open")) closeResumeSidebar();
 });
 
+let preloaderDisplayed = 0;
+let preloaderTimer = null;
+
+// Animates the visible "N%" up to target (never backwards), independent of
+// how choppy the real progress events are, so it always reads as a smooth count.
+function animatePreloaderTo(target, stepMs = 8) {
+  target = Math.min(100, Math.max(0, target));
+  if (target <= preloaderDisplayed) return Promise.resolve();
+  const el = document.getElementById("preloaderPercent");
+  return new Promise((resolve) => {
+    clearInterval(preloaderTimer);
+    preloaderTimer = setInterval(() => {
+      preloaderDisplayed++;
+      if (el) el.textContent = `${preloaderDisplayed}%`;
+      if (preloaderDisplayed >= target) {
+        clearInterval(preloaderTimer);
+        resolve();
+      }
+    }, stepMs);
+  });
+}
+
+function hidePreloader() {
+  const el = document.getElementById("preloader");
+  if (!el) return;
+  el.classList.add("hidden");
+  el.addEventListener("transitionend", () => el.remove(), { once: true });
+}
+
 (async function init() {
-  await loadSettings();
-  await loadPosts();
+  try {
+    animatePreloaderTo(15);
+    await loadSettings();
+    animatePreloaderTo(40);
+    await loadPosts();
+    animatePreloaderTo(70);
+    await waitForMediaReady((done, total) => {
+      animatePreloaderTo(70 + Math.round((done / total) * 25));
+    });
+    await animatePreloaderTo(100);
+  } finally {
+    setTimeout(hidePreloader, 250);
+  }
 
   // Reflect admin changes without a manual refresh whenever the tab regains focus.
   document.addEventListener("visibilitychange", () => {

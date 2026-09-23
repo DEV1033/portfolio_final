@@ -33,6 +33,51 @@ function applyAccentColor(hex) {
   document.documentElement.style.setProperty("--accent", hex);
 }
 
+// Resolves once every img/video currently in the DOM has loaded (or errored),
+// or after timeoutMs — whichever comes first, so a slow/lazy/broken asset can
+// never hang the preloader indefinitely. Calls onProgress(done, total) as each
+// element settles so callers can drive a percentage indicator.
+function waitForMediaReady(onProgress, timeoutMs = 3500) {
+  const els = Array.from(document.querySelectorAll("img[src], video[src]"));
+  const total = els.length;
+  let done = 0;
+
+  if (total === 0) {
+    if (onProgress) onProgress(1, 1);
+    return Promise.resolve();
+  }
+
+  function settle() {
+    done++;
+    if (onProgress) onProgress(done, total);
+  }
+
+  const perElement = els.map((el) => {
+    if (el.tagName === "VIDEO") {
+      if (el.readyState >= 2) {
+        settle();
+        return Promise.resolve();
+      }
+      return new Promise((resolve) => {
+        el.addEventListener("loadeddata", () => (settle(), resolve()), { once: true });
+        el.addEventListener("error", () => (settle(), resolve()), { once: true });
+      });
+    }
+    if (el.complete) {
+      settle();
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+      el.addEventListener("load", () => (settle(), resolve()), { once: true });
+      el.addEventListener("error", () => (settle(), resolve()), { once: true });
+    });
+  });
+
+  const allReady = Promise.all(perElement);
+  const timeout = new Promise((resolve) => setTimeout(resolve, timeoutMs));
+  return Promise.race([allReady, timeout]);
+}
+
 function mediaTag(m) {
   return m.media_type === "video"
     ? `<video src="${escapeHtml(m.url)}" autoplay muted loop playsinline></video>`
