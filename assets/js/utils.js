@@ -290,12 +290,10 @@ const GH_DAY_LABELS = { 1: "Mon", 3: "Wed", 5: "Fri" };
 // Renders our own GitHub contribution heatmap (instead of embedding a
 // third-party image) so the empty-day cells can be styled to sit quietly in
 // the dark theme, and the grid can stretch to fill its container with real
-// day/month labels like GitHub's own graph. Data comes from our own
-// /api/github-contributions proxy (see api/github-contributions.js) rather
-// than a third-party mirror, whose cache lagged real contributions by hours.
+// day/month labels like GitHub's own graph.
 async function renderGithubGraph(username, container) {
   try {
-    const res = await fetch(`/api/github-contributions?username=${encodeURIComponent(username)}`);
+    const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`);
     if (!res.ok) throw new Error("bad response");
     const data = await res.json();
     const days = data.contributions || [];
