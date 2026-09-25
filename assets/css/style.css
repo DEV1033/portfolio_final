@@ -184,6 +184,38 @@ button {
   border-top: 1px solid var(--border);
 }
 
+/* ---------- about ---------- */
+body.about-page {
+  --bg: #000000;
+  background: var(--bg);
+}
+
+.about-section {
+  height: 100vh;
+  padding: 64px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.pixel-run-img {
+  width: 120px;
+  height: auto;
+  image-rendering: pixelated;
+  user-select: none;
+  pointer-events: none;
+}
+
+.about-placeholder {
+  margin: 0;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+}
+
 /* ---------- profile header ---------- */
 .profile-card {
   display: flex;
