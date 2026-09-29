@@ -130,6 +130,7 @@ button {
     justify-content: center;
     align-items: center;
     padding: 18px;
+    border: none;
     border-bottom: 1px solid var(--border);
     background: var(--bg);
     position: sticky;
