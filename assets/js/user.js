@@ -201,6 +201,7 @@ function hidePreloader() {
 }
 
 renderGithubGraph("DEV1033", document.getElementById("githubGraph"));
+wireMobileMenu();
 
 (async function init() {
   try {

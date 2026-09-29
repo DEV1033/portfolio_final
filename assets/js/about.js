@@ -1,4 +1,5 @@
 initPixelRun();
+wireMobileMenu();
 
 (async function loadAccentColor() {
   const { data, error } = await window.sb.from("site_settings").select("accent_color").eq("id", 1).single();
