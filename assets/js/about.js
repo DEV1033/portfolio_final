@@ -1,3 +1,4 @@
+initPixelRun();
 wireMobileMenu();
 
 (async function loadAccentColor() {
