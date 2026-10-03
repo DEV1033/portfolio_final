@@ -389,6 +389,31 @@ body.about-page {
   color: #5b5b5b;
 }
 
+.reel-embed {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0 20px;
+}
+
+.reel-crop {
+  flex: 1 1 280px;
+  max-width: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* The embed is a cross-origin iframe, so its "Add a comment..." row can't be
+   styled away — instead pull the iframe up under the wrapper's clipped edge.
+   That row is the embed's last element: 44px tall + a 1px divider. */
+.reel-crop .instagram-media {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 -45px !important;
+}
+
 .interests-row {
   display: flex;
   gap: 64px;
