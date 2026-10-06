@@ -1640,3 +1640,517 @@ body.about-page {
   border: none;
   background: #fff;
 }
+
+/* ---------- home ---------- */
+.home-page .layout {
+  max-width: 1200px;
+}
+
+.home {
+  --home-line: rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+  font-family: "Urbanist", sans-serif;
+}
+
+.home :where(p, h1, h2) {
+  margin: 0;
+  font-weight: 400;
+}
+
+.home h1,
+.home-heading {
+  font-family: "Average", serif;
+}
+
+.home-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 32px;
+  padding: 20px 32px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-top: none;
+  font-size: 18px;
+}
+
+.home-topnav a {
+  color: #8a8a8a;
+  transition: color 0.15s ease;
+}
+
+.home-topnav a:hover,
+.home-topnav a.active {
+  color: var(--text);
+}
+
+@media (max-width: 900px) {
+  .home-topnav {
+    display: none;
+  }
+}
+
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 80px;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+.home-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 32px;
+}
+
+.home-hero-text {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.home h1 {
+  font-size: 80px;
+  line-height: normal;
+}
+
+.home-hero-text p {
+  font-size: 24px;
+}
+
+.home-hero-eyes {
+  flex-shrink: 0;
+  width: 164px;
+  height: auto;
+}
+
+.home-hero-eyes .eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.home-hero-eyes .pupil {
+  transition: transform 0.12s ease-out;
+}
+
+.home-hero-eyes:hover .eye {
+  animation: eye-blink 0.35s ease-in-out;
+}
+
+@keyframes eye-blink {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  45%,
+  55% {
+    transform: scaleY(0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-eyes:hover .eye {
+    animation: none;
+  }
+}
+
+.home-skills {
+  overflow: hidden;
+  padding: 12px 0;
+  font-size: 20px;
+  color: #555555;
+  /* soft fade at both edges so items slide in/out instead of being cut */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.home-skills-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: home-ticker 24s linear infinite;
+}
+
+/* spacing lives on each item (not flex gap) so the duplicated half lines up
+   exactly at -50% and the loop is seamless */
+.home-skills-track li {
+  padding-right: 96px;
+  transition: color 0.2s ease;
+}
+
+.home-skills-track li:hover {
+  color: var(--text);
+}
+
+.home-skills:hover .home-skills-track {
+  animation-play-state: paused;
+}
+
+@keyframes home-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-skills {
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding: 12px 32px;
+  }
+  .home-skills-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    gap: 8px 0;
+  }
+  .home-skills-track li[aria-hidden] {
+    display: none;
+  }
+}
+
+.home-github {
+  background: #090909;
+  min-height: 265px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.home-github .github-graph {
+  min-width: 0;
+}
+
+.home-roles {
+  display: flex;
+  border-top: 1px solid var(--home-line);
+}
+
+.home-roles p {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 24px 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.home-roles p + p {
+  border-left: 1px solid var(--home-line);
+}
+
+.home-block {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--home-line);
+  border-top: none;
+}
+
+.home-heading {
+  font-size: 40px;
+  line-height: normal;
+  padding: 40px 32px;
+}
+
+.home-work {
+  border-top: 1px solid var(--home-line);
+}
+
+.home-work-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #eef4ff;
+}
+
+.home-work-media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.home-work-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 32px;
+}
+
+.home-work-title {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.home-work-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.home-work-tags span {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 34px;
+  padding: 8px 12px;
+  font-size: 18px;
+  color: #747474;
+  white-space: nowrap;
+}
+
+.home-tools {
+  gap: 24px;
+  padding: 40px 32px;
+}
+
+.home-tools .home-heading {
+  padding: 34px 0;
+}
+
+.home-logos {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.home-logos-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: home-ticker 28s linear infinite reverse; /* left → right */
+}
+
+/* per-item spacing (not gap) keeps the -50% loop seamless */
+.home-logos-track li {
+  padding-right: 120px;
+  display: flex;
+}
+
+.home-logos-track img {
+  display: block;
+  height: auto;
+}
+
+.home-logos:hover .home-logos-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-logos {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .home-logos-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .home-logos-track li {
+    padding-right: 0;
+  }
+  .home-logos-track li[aria-hidden] {
+    display: none;
+  }
+}
+
+.home-tools-grid {
+  display: flex;
+  gap: 19px;
+}
+
+.home-tool {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 24px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 20px;
+}
+
+.home-tool img {
+  width: 44px;
+  height: 44px;
+}
+
+.home-tool > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-tool-name {
+  font-weight: 500;
+}
+
+.home-tool-desc {
+  color: #737373;
+}
+
+.home-experiments {
+  padding-bottom: 40px;
+}
+
+.home-experiments-ticker {
+  overflow: hidden;
+}
+
+.home-experiments-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: max-content;
+  animation: home-ticker 40s linear infinite;
+}
+
+/* per-item spacing (not gap) keeps the -50% loop seamless */
+.home-experiments-track li {
+  padding-right: 16px;
+  flex-shrink: 0;
+}
+
+.home-experiments-track img,
+.home-experiments-track video {
+  display: block;
+  height: 320px;
+  width: auto;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.home-experiments-ticker:hover .home-experiments-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-experiments-ticker {
+    overflow-x: auto;
+  }
+  .home-experiments-track {
+    animation: none;
+  }
+  .home-experiments-track li[aria-hidden] {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .home h1 {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-hero {
+    padding-top: 40px;
+    gap: 20px;
+  }
+  .home-hero-top,
+  .home-github {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .home-hero-top {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .home-hero-eyes {
+    width: 96px;
+  }
+  .home h1 {
+    font-size: 48px;
+  }
+  .home-hero-text p {
+    font-size: 18px;
+  }
+  .home-skills {
+    font-size: 16px;
+  }
+  .home-skills-track li {
+    padding-right: 48px;
+  }
+  .home-github {
+    min-height: 0;
+  }
+  .home-roles {
+    flex-direction: column;
+  }
+  .home-roles p {
+    font-size: 16px;
+    padding: 18px 10px;
+  }
+  .home-roles p + p {
+    border-left: none;
+    border-top: 1px solid var(--home-line);
+  }
+  .home-heading {
+    font-size: 28px;
+    padding: 28px 20px;
+  }
+  .home-work-body {
+    padding: 24px 20px;
+  }
+  .home-work-title {
+    font-size: 20px;
+  }
+  .home-work-tags {
+    gap: 8px;
+  }
+  .home-work-tags span {
+    font-size: 14px;
+  }
+  .home-tools {
+    padding: 28px 20px;
+  }
+  .home-tools .home-heading {
+    padding: 0;
+  }
+  .home-tools-grid {
+    flex-direction: column;
+  }
+  .home-experiments {
+    padding-bottom: 28px;
+  }
+  .home-experiments-track img,
+  .home-experiments-track video {
+    height: 200px;
+  }
+  .home-experiments-track li {
+    padding-right: 10px;
+  }
+  .home-logos-track li {
+    padding-right: 56px;
+  }
+  .home-logos-track img {
+    width: auto;
+    max-height: 32px;
+  }
+  .home-tool {
+    font-size: 17px;
+  }
+}

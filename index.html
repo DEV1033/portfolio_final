@@ -4,13 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dev Chaudhary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Average&family=Urbanist:wght@400;500&display=swap" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
-  <div class="preloader" id="preloader">
-    <div class="preloader-percent" id="preloaderPercent">0%</div>
-  </div>
-
+<body class="home-page">
   <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
   </button>
@@ -23,51 +22,128 @@
     <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
   </nav>
 
-  <div class="cta-bar" id="ctaBar"></div>
-
   <div class="page">
     <div class="layout">
-      <nav class="nav">
-        <a href="index.html" class="active">Home</a>
-        <a href="about.html">About</a>
-        <a href="playground.html">Playground</a>
-        <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble</a>
-        <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
-      </nav>
 
-      <div class="feed">
-        <div class="card profile-card" id="profileCard">
-          <div class="profile-header" id="profileHeader">
-            <img class="profile-banner" id="bannerImg" src="" alt="" hidden />
-            <div class="avatar-wrap" id="avatarWrap">
-              <img class="avatar" id="avatarImg" src="" alt="" />
+      <main class="home">
+        <nav class="home-topnav">
+          <a href="index.html" class="active">Home</a>
+          <a href="about.html">About</a>
+          <a href="playground.html">Playground</a>
+          <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble</a>
+          <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
+        </nav>
+
+        <section class="home-hero">
+          <div class="home-hero-top">
+            <div class="home-hero-text">
+              <h1>Dev Chaudhary</h1>
+              <p>Aspiring Product Designer with a taste of Tech , Aesthetics &amp; Product Thinking</p>
             </div>
+            <svg class="home-hero-eyes" id="heroEyes" width="164" height="78" viewBox="0 0 164 78.0139" fill="none" aria-hidden="true">
+              <g class="eye">
+                <circle cx="39.0069" cy="39.0069" r="39.0069" fill="#D9D9D9" />
+                <circle class="pupil" cx="38.5" cy="39.5" r="15.5" fill="black" />
+              </g>
+              <g class="eye">
+                <circle cx="124.993" cy="39.0069" r="39.0069" fill="#D9D9D9" />
+                <circle class="pupil" cx="124.5" cy="39.5" r="15.5" fill="black" />
+              </g>
+            </svg>
           </div>
-          <div class="profile-body">
-            <img class="featured-badge" src="assets/img/wop-featured-badge.svg" alt="Featured on Wall of Portfolios" />
-            <div class="profile-name-row">
-              <div class="name-line">
-                <span class="name" id="profileName">Dev Chaudhary</span>
-                <span id="verifiedIcon"></span>
-              </div>
-              <p class="tagline" id="profileTagline"></p>
-            </div>
-            <div class="website-row" id="websiteRow"></div>
-            <div class="tags-row" id="socialRow"></div>
+
+          <div class="home-skills">
+            <ul class="home-skills-track">
+              <li>Prototyping</li>
+              <li>AI Assisted Workflow</li>
+              <li>User Research</li>
+              <li>Design Thinking</li>
+              <li>Product Thinking</li>
+              <li aria-hidden="true">Prototyping</li>
+              <li aria-hidden="true">AI Assisted Workflow</li>
+              <li aria-hidden="true">User Research</li>
+              <li aria-hidden="true">Design Thinking</li>
+              <li aria-hidden="true">Product Thinking</li>
+            </ul>
+          </div>
+
+          <div class="home-github">
             <div class="github-graph" id="githubGraph"></div>
           </div>
-        </div>
 
-        <div class="tabs" id="tabs" style="border:1px solid var(--border); border-top:none; padding:16px 24px 0;">
-          <button class="tab active" data-cat="all">All</button>
-          <button class="tab" data-cat="tweets">Tweets</button>
-          <button class="tab" data-cat="media">Media</button>
-          <button class="tab" data-cat="case_studies">Case Studies</button>
-          <button class="tab" data-cat="activities">Activities</button>
-        </div>
+          <div class="home-roles">
+            <p>Current @ Easycomm.io</p>
+            <p>Previously @ Goodspace.ai , GeeksforGeeks</p>
+          </div>
+        </section>
 
-        <div id="postsContainer"></div>
-      </div>
+        <section class="home-block">
+          <h2 class="home-heading">Selected Works</h2>
+          <article class="home-work">
+            <div class="home-work-media">
+              <video id="goodexVideo" src="assets/media/goodex-showcase.mp4" poster="assets/img/home/goodex-thumbnail.png" autoplay muted loop playsinline preload="metadata" aria-label="Goodex — AI-powered candidate search"></video>
+            </div>
+            <div class="home-work-body">
+              <p class="home-work-title">Helping recruiters discover the right talent, faster</p>
+              <div class="home-work-tags">
+                <span>Internal Tool</span>
+                <span>Early Stage Startup</span>
+                <span>0 → 1</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="home-block home-experiments">
+          <h2 class="home-heading">Visual Experimentation</h2>
+          <div class="home-experiments-ticker" id="experimentsTicker">
+            <ul class="home-experiments-track">
+              <li><video src="assets/media/experiments/exp-01.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li><video src="assets/media/experiments/exp-02.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li><video src="assets/media/experiments/exp-03.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li><video src="assets/media/experiments/exp-04.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li><video src="assets/media/experiments/exp-05.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li aria-hidden="true"><video src="assets/media/experiments/exp-01.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li aria-hidden="true"><video src="assets/media/experiments/exp-02.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li aria-hidden="true"><video src="assets/media/experiments/exp-03.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li aria-hidden="true"><video src="assets/media/experiments/exp-04.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+              <li aria-hidden="true"><video src="assets/media/experiments/exp-05.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="home-block home-tools">
+          <h2 class="home-heading">Skilled in the Tool that matters</h2>
+          <div class="home-logos">
+            <ul class="home-logos-track">
+              <li><img src="assets/img/home/tool-gemini.svg" width="157" height="36" alt="Gemini" /></li>
+              <li><img src="assets/img/home/tool-lottiefiles.svg" width="253" height="51" alt="LottieFiles" /></li>
+              <li><img src="assets/img/home/tool-framer.svg" width="119" height="38" alt="Framer" /></li>
+              <li><img src="assets/img/home/tool-vscode.svg" width="125" height="57" alt="Visual Studio Code" /></li>
+              <li aria-hidden="true"><img src="assets/img/home/tool-gemini.svg" width="157" height="36" alt="" /></li>
+              <li aria-hidden="true"><img src="assets/img/home/tool-lottiefiles.svg" width="253" height="51" alt="" /></li>
+              <li aria-hidden="true"><img src="assets/img/home/tool-framer.svg" width="119" height="38" alt="" /></li>
+              <li aria-hidden="true"><img src="assets/img/home/tool-vscode.svg" width="125" height="57" alt="" /></li>
+            </ul>
+          </div>
+          <div class="home-tools-grid">
+            <div class="home-tool">
+              <img src="assets/img/home/figma-logo.svg" width="44" height="44" alt="" />
+              <div>
+                <p class="home-tool-name">Figma</p>
+                <p class="home-tool-desc">Intermediate-level UI/UX design, prototyping, auto-layout, component libraries and design systems.</p>
+              </div>
+            </div>
+            <div class="home-tool">
+              <img src="assets/img/home/claude-logo.svg" width="44" height="44" alt="" />
+              <div>
+                <p class="home-tool-name">Claude</p>
+                <p class="home-tool-desc">Designed and built website from scratch using Claude chat and design - from design system to deployment.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 
@@ -80,10 +156,7 @@
     <iframe class="resume-sidebar-frame" id="resumeSidebarFrame" title="Resume"></iframe>
   </aside>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/supabaseClient.js"></script>
   <script src="assets/js/utils.js"></script>
-  <script src="assets/js/user.js"></script>
+  <script src="assets/js/home.js"></script>
 </body>
 </html>
