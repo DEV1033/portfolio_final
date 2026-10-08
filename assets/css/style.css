@@ -1953,6 +1953,16 @@ body.about-page {
   height: auto;
 }
 
+/* logos without an official wordmark file: mark + Urbanist name */
+.home-logos-track .home-logo-lockup {
+  align-items: center;
+  gap: 12px;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
 .home-logos:hover .home-logos-track {
   animation-play-state: paused;
 }
@@ -2149,6 +2159,13 @@ body.about-page {
   .home-logos-track img {
     width: auto;
     max-height: 32px;
+  }
+  .home-logos-track .home-logo-lockup {
+    font-size: 22px;
+    gap: 8px;
+  }
+  .home-logos-track .home-logo-lockup img {
+    max-height: 28px;
   }
   .home-tool {
     font-size: 17px;

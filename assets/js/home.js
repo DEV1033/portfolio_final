@@ -32,19 +32,21 @@ wireMobileMenu();
   document.addEventListener("pointerleave", () => pupils.forEach((p) => (p.style.transform = "")));
 })();
 
-// ---------- Goodex showcase video ----------
-// Plays only while the card is on screen; reduced-motion users just see the poster.
-(function initGoodexVideo() {
-  const video = document.getElementById("goodexVideo");
-  if (!video) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    video.removeAttribute("autoplay");
-    video.pause();
-    return;
-  }
-  new IntersectionObserver(([entry]) => (entry.isIntersecting ? video.play().catch(() => {}) : video.pause()), {
-    threshold: 0.2,
-  }).observe(video);
+// ---------- Selected Works videos ----------
+// Each plays only while its card is on screen; reduced-motion users just see the first frame/poster.
+(function initWorkVideos() {
+  const videos = document.querySelectorAll(".home-work-media video");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  videos.forEach((video) => {
+    if (reduced) {
+      video.removeAttribute("autoplay");
+      video.pause();
+      return;
+    }
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? video.play().catch(() => {}) : video.pause()), {
+      threshold: 0.2,
+    }).observe(video);
+  });
 })();
 
 // ---------- Visual Experimentation ticker ----------
