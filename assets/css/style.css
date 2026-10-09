@@ -1939,7 +1939,7 @@ body.about-page {
   display: flex;
   align-items: center;
   width: max-content;
-  animation: home-ticker 28s linear infinite reverse; /* left → right */
+  animation: home-ticker 28s linear infinite;
 }
 
 /* per-item spacing (not gap) keeps the -50% loop seamless */
@@ -2022,6 +2022,85 @@ body.about-page {
   color: #737373;
 }
 
+.home-featured {
+  gap: 24px;
+  padding: 40px 32px;
+}
+
+.home-featured .home-heading {
+  padding: 34px 0;
+}
+
+.home-featured-row {
+  overflow: hidden;
+  margin: 0 -32px;
+  padding: 8px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.home-featured-track {
+  display: flex;
+  width: max-content;
+  animation: home-ticker 52s linear infinite reverse; /* left → right */
+}
+
+.home-featured-row:hover .home-featured-track {
+  animation-play-state: paused;
+}
+
+/* each phone = device frame + screenshot layered on top (positions from Figma, as % of the frame) */
+.home-phone {
+  position: relative;
+  flex-shrink: 0;
+  width: 260px;
+  /* per-item spacing (not gap) keeps the -50% loop seamless */
+  margin-right: 20px;
+  transition: transform 0.3s ease;
+}
+
+.home-phone:hover {
+  transform: translateY(-6px);
+}
+
+.home-phone-frame {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.home-phone-screen {
+  position: absolute;
+  left: 3.728%;
+  top: 1.493%;
+  width: 92.545%;
+  height: auto;
+}
+
+.home-phone--pro .home-phone-screen {
+  left: 4.062%;
+  top: 1.625%;
+  width: 91.807%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-featured-row {
+    overflow-x: auto;
+  }
+  .home-featured-track {
+    animation: none;
+  }
+  .home-phone[aria-hidden] {
+    display: none;
+  }
+  .home-phone {
+    transition: none;
+  }
+  .home-phone:hover {
+    transform: none;
+  }
+}
+
 .home-experiments {
   padding-bottom: 40px;
 }
@@ -2066,6 +2145,394 @@ body.about-page {
   }
   .home-experiments-track li[aria-hidden] {
     display: none;
+  }
+}
+
+.home-kind {
+  gap: 24px;
+  padding: 40px 32px;
+  /* clip the card that flies off at the section edge */
+  overflow: hidden;
+}
+
+.home-kind .home-heading {
+  padding: 34px 0;
+}
+
+/* Card-stack carousel: front card fully visible, the rest peek out below it.
+   Card style matches the tool cards; quotes use the heading serif. */
+.home-kind-stack {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  /* real height is set from JS: tallest card + the peek offset */
+  min-height: 320px;
+  touch-action: pan-y;
+  outline: none;
+}
+
+.home-kind-card {
+  position: absolute;
+  inset: 0 0 auto 0;
+  margin: 0;
+  padding: 32px 24px;
+  /* solid (not translucent) so the cards behind don't show through */
+  background: #141414;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transform-origin: 50% 100%;
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.55s ease;
+  cursor: grab;
+  user-select: none;
+}
+
+.home-kind-card[data-pos="0"] {
+  z-index: 3;
+}
+
+.home-kind-card[data-pos="1"] {
+  z-index: 2;
+  transform: translateY(20px) scale(0.95);
+  opacity: 0.55;
+}
+
+.home-kind-card[data-pos="2"] {
+  z-index: 1;
+  transform: translateY(40px) scale(0.9);
+  opacity: 0.25;
+}
+
+.home-kind-card[data-pos="hidden"] {
+  z-index: 0;
+  transform: translateY(40px) scale(0.9);
+  opacity: 0;
+}
+
+.home-kind-card:not([data-pos="0"]) {
+  pointer-events: none;
+}
+
+/* only the front card shows its text; the ones behind are just peeking edges */
+.home-kind-card > * {
+  transition: opacity 0.3s ease;
+}
+
+.home-kind-card:not([data-pos="0"]):not(.is-leaving) > * {
+  opacity: 0;
+}
+
+/* front card flying off to the side when advancing */
+.home-kind-card.is-leaving {
+  z-index: 4;
+  transform: translateX(var(--fly, -115%)) rotate(var(--tilt, -8deg));
+  opacity: 0;
+}
+
+.home-kind-card.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.home-kind-controls {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.home-kind-count {
+  font-size: 18px;
+  color: #737373;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-kind-arrows {
+  display: flex;
+  gap: 12px;
+}
+
+.home-kind-arrows button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--home-line);
+  border-radius: 50%;
+  color: var(--text);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.home-kind-arrows button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-kind-card {
+    transition: opacity 0.2s ease;
+  }
+}
+
+.home-kind-card blockquote {
+  margin: 0;
+  font-family: "Average", serif;
+  font-size: 24px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.home-kind-card blockquote::before {
+  content: "\201C";
+  display: block;
+  font-size: 56px;
+  line-height: 0.6;
+  margin-bottom: 8px;
+  color: #555555;
+}
+
+/* highlighter marks: a dim-yellow stroke sweeps across each phrase, one after another,
+   when the card reaches the front (and the stack is on screen); resets when it leaves */
+.home-kind-card mark {
+  color: inherit;
+  background-color: transparent; /* drop the browser's default bright-yellow <mark> */
+  background-image: linear-gradient(rgba(214, 176, 72, 0.32), rgba(214, 176, 72, 0.32));
+  background-repeat: no-repeat;
+  background-position: 0 85%;
+  background-size: 0% 62%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 2px;
+  transition: background-size 0s, color 0s;
+}
+
+.home-kind-stack.is-inview .home-kind-card[data-pos="0"] mark {
+  background-size: 100% 62%;
+  color: #f1dc9c;
+  transition: background-size 0.7s cubic-bezier(0.6, 0, 0.3, 1), color 0.5s ease;
+  transition-delay: calc(0.45s + var(--i) * 0.45s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-kind-stack.is-inview .home-kind-card[data-pos="0"] mark {
+    transition: none;
+  }
+}
+
+.home-kind-card figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 20px;
+}
+
+.home-kind-name {
+  font-weight: 500;
+}
+
+.home-kind-company {
+  color: #737373;
+}
+
+/* ---------- footer ----------
+   Inspired by a ruled "spec sheet" footer: a line grid of labelled cells, the eyes as the
+   brand mark, and an outlined name drawn like a blueprint between rulers. */
+.home-footer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--home-line);
+  border-top: none;
+}
+
+.home-footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.1fr;
+}
+
+.home-footer-cell {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid var(--home-line);
+  border-bottom: 1px solid var(--home-line);
+}
+
+.home-footer-statement p {
+  font-family: "Average", serif;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.home-footer-mark {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+  border-right: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-footer-eyes {
+  width: 164px;
+}
+
+.home-footer-label {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #737373;
+}
+
+.home-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 18px;
+}
+
+.home-footer-links--2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.home-footer-links a,
+.home-footer-value a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.home-footer-links a svg,
+.home-footer-value a svg {
+  opacity: 0.4;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.home-footer-links a:hover,
+.home-footer-value a:hover {
+  color: #f1dc9c;
+}
+
+.home-footer-links a:hover svg,
+.home-footer-value a:hover svg {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.home-footer-links a.active {
+  color: #f1dc9c;
+}
+
+.home-footer-value {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* blueprint band: ruler ticks on all four edges + corner crosshairs */
+.home-footer-blueprint {
+  position: relative;
+  padding: 48px 56px;
+  border-bottom: 1px solid var(--home-line);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px) top 18px left 44px / calc(100% - 88px) 6px no-repeat,
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px) bottom 18px left 44px / calc(100% - 88px) 6px no-repeat,
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px) left 18px top 44px / 6px calc(100% - 88px) no-repeat,
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 10px) right 18px top 44px / 6px calc(100% - 88px) no-repeat;
+}
+
+.bp-cross {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)) center / 1px 100% no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)) center / 100% 1px no-repeat;
+}
+
+.bp-cross--tl { top: 15px; left: 15px; }
+.bp-cross--tr { top: 15px; right: 15px; }
+.bp-cross--bl { bottom: 15px; left: 15px; }
+.bp-cross--br { bottom: 15px; right: 15px; }
+
+.home-footer-name {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.home-footer-name .bp-guides line {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.home-footer-name text {
+  font-family: "Urbanist", sans-serif;
+  font-weight: 500;
+  font-size: 176px;
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  /* draw-in: the outline traces itself, then a faint fill settles in */
+  stroke-dasharray: 2400;
+  stroke-dashoffset: 2400;
+  transition: stroke-dashoffset 2.6s cubic-bezier(0.4, 0, 0.2, 1), fill 1s ease 2.2s;
+}
+
+.home-footer-blueprint.is-drawn .home-footer-name text {
+  stroke-dashoffset: 0;
+  fill: rgba(255, 255, 255, 0.03);
+}
+
+.home-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  font-size: 15px;
+  color: #737373;
+}
+
+.home-footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.home-footer-top:hover {
+  color: #f1dc9c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-footer-name text {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .home-footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .home-footer-statement {
+    grid-column: 1 / -1;
+  }
+  .home-footer-mark {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 
@@ -2142,6 +2609,61 @@ body.about-page {
   }
   .home-tools-grid {
     flex-direction: column;
+  }
+  .home-footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-footer-statement,
+  .home-footer-mark {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .home-footer-mark {
+    min-height: 0;
+    padding: 28px 20px;
+  }
+  .home-footer-eyes {
+    width: 110px;
+  }
+  .home-footer-cell {
+    padding: 22px 20px;
+  }
+  .home-footer-statement p {
+    font-size: 26px;
+  }
+  .home-footer-blueprint {
+    padding: 28px 20px;
+  }
+  .home-footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+  }
+  .home-kind {
+    padding: 28px 20px;
+  }
+  .home-kind .home-heading {
+    padding: 0;
+  }
+  .home-kind-card blockquote {
+    font-size: 20px;
+  }
+  .home-kind-card figcaption {
+    font-size: 17px;
+  }
+  .home-featured {
+    padding: 28px 20px;
+  }
+  .home-featured .home-heading {
+    padding: 0;
+  }
+  .home-featured-row {
+    margin: 0 -20px;
+  }
+  .home-phone {
+    width: 180px;
+    margin-right: 14px;
   }
   .home-experiments {
     padding-bottom: 28px;
