@@ -4,9 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Playground — Dev Chaudhary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Average&family=Urbanist:wght@400;500&display=swap" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body class="about-page">
+<body class="about-page has-topnav">
   <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
   </button>
@@ -21,7 +24,7 @@
 
   <div class="page">
     <div class="layout">
-      <nav class="nav">
+      <nav class="site-topnav">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="playground.html" class="active">Playground</a>
@@ -35,6 +38,75 @@
           <p class="coming-soon-text">Coming soon</p>
         </section>
       </div>
+
+        <footer class="home-footer">
+          <div class="home-footer-grid">
+            <div class="home-footer-cell home-footer-statement">
+              <p>Have a project in mind? Let&rsquo;s design something thoughtful together.</p>
+            </div>
+            <div class="home-footer-cell">
+              <p class="home-footer-label">Pages</p>
+              <nav class="home-footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="playground.html" class="active">Playground</a>
+                <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
+              </nav>
+            </div>
+            <div class="home-footer-cell">
+              <p class="home-footer-label">Elsewhere</p>
+              <nav class="home-footer-links home-footer-links--2col">
+                <a href="https://www.linkedin.com/in/dev-chaudhary-7983a822a" target="_blank" rel="noopener">LinkedIn <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                <a href="https://www.instagram.com/iamdc5203/" target="_blank" rel="noopener">Instagram <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                <a href="https://github.com/DEV1033" target="_blank" rel="noopener">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              </nav>
+            </div>
+            <div class="home-footer-cell home-footer-mark">
+              <svg class="home-hero-eyes home-footer-eyes js-eyes" width="164" height="78" viewBox="0 0 164 78.0139" fill="none" aria-hidden="true">
+                <g class="eye">
+                  <circle cx="39.0069" cy="39.0069" r="39.0069" fill="#D9D9D9" />
+                  <circle class="pupil" cx="38.5" cy="39.5" r="15.5" fill="black" />
+                </g>
+                <g class="eye">
+                  <circle cx="124.993" cy="39.0069" r="39.0069" fill="#D9D9D9" />
+                  <circle class="pupil" cx="124.5" cy="39.5" r="15.5" fill="black" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="home-footer-cell">
+              <p class="home-footer-label">Currently</p>
+              <p class="home-footer-value">Designing @ <a href="https://easycomm.io" target="_blank" rel="noopener">Easycomm.io</a></p>
+            </div>
+            <div class="home-footer-cell">
+              <p class="home-footer-label">Previously</p>
+              <p class="home-footer-value">Goodspace.ai<br />GeeksforGeeks</p>
+            </div>
+            <div class="home-footer-cell">
+              <p class="home-footer-label">Say hello</p>
+              <p class="home-footer-value"><a href="https://www.linkedin.com/in/dev-chaudhary-7983a822a" target="_blank" rel="noopener">Message on LinkedIn <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+            </div>
+          </div>
+
+          <div class="home-footer-blueprint" id="footerBlueprint">
+            <span class="bp-cross bp-cross--tl"></span><span class="bp-cross bp-cross--tr"></span>
+            <span class="bp-cross bp-cross--bl"></span><span class="bp-cross bp-cross--br"></span>
+            <svg class="home-footer-name" viewBox="0 0 1200 200" role="img" aria-label="Dev Chaudhary">
+              <g class="bp-guides">
+                <line x1="0" y1="34" x2="1200" y2="34" />
+                <line x1="0" y1="166" x2="1200" y2="166" />
+                <line x1="600" y1="14" x2="600" y2="186" />
+              </g>
+              <text x="600" y="166" text-anchor="middle" textLength="1140" lengthAdjust="spacingAndGlyphs">DEV CHAUDHARY</text>
+            </svg>
+          </div>
+
+          <div class="home-footer-bar">
+            <p>&copy; 2026 Dev Chaudhary. Designed in Figma, built with Claude.</p>
+            <a href="#" class="home-footer-top">Back to top <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </footer>
     </div>
   </div>
 

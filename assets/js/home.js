@@ -1,51 +1,8 @@
 renderGithubGraph("DEV1033", document.getElementById("githubGraph"));
 wireMobileMenu();
 
-// ---------- eyes (hero + footer): pupils follow the pointer ----------
-(function initEyes() {
-  const svgs = [...document.querySelectorAll(".js-eyes")];
-  if (!svgs.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  const MAX_OFFSET = 20; // eye r ≈ 39, pupil r 15.5 → keeps the pupil inside the white
-  const pupils = svgs.flatMap((svg) => [...svg.querySelectorAll(".pupil")]);
-  let frame = 0;
-
-  function look(x, y) {
-    cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(() => {
-      pupils.forEach((pupil) => {
-        // Offsets are in SVG user units, so convert from screen px by the SVG's scale.
-        // Measure the (static) white of the eye — the pupil's own rect moves with it.
-        const rect = pupil.previousElementSibling.getBoundingClientRect();
-        const scale = pupil.ownerSVGElement.getBoundingClientRect().width / 164;
-        const dx = x - (rect.left + rect.width / 2);
-        const dy = y - (rect.top + rect.height / 2);
-        const dist = Math.hypot(dx, dy);
-        const reach = Math.min(MAX_OFFSET, dist / scale / 8);
-        const k = dist ? reach / dist : 0;
-        pupil.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
-      });
-    });
-  }
-
-  window.addEventListener("pointermove", (e) => look(e.clientX, e.clientY), { passive: true });
-  document.addEventListener("pointerleave", () => pupils.forEach((p) => (p.style.transform = "")));
-})();
-
-// ---------- footer: blueprint name draws itself in once it's on screen ----------
-(function initFooterBlueprint() {
-  const el = document.getElementById("footerBlueprint");
-  if (!el) return;
-  const io = new IntersectionObserver(
-    ([entry]) => {
-      if (!entry.isIntersecting) return;
-      el.classList.add("is-drawn");
-      io.disconnect();
-    },
-    { threshold: 0.35 }
-  );
-  io.observe(el);
-})();
+initEyes();
+initFooterBlueprint();
 
 // ---------- Selected Works videos ----------
 // Each plays only while its card is on screen; reduced-motion users just see the first frame/poster.

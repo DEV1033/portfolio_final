@@ -9,6 +9,7 @@
   --text: #ffffff;
   --muted: #535353;
   --muted-2: #6e6e6e;
+  --highlight: #f1dc9c;
 }
 
 * {
@@ -192,7 +193,7 @@ button {
   }
 
   .mobile-menu a.active {
-    color: var(--accent);
+    color: var(--highlight);
   }
 }
 
@@ -272,7 +273,7 @@ body.about-page {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding: 32px 20px;
+  padding: 32px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -352,7 +353,7 @@ body.about-page {
 }
 
 .about-block-header {
-  padding: 0 20px;
+  padding: 0 32px;
 }
 
 .about-block-header h3 {
@@ -371,7 +372,7 @@ body.about-page {
 .work-card {
   background: #161616;
   border: 1px solid #808080;
-  padding: 24px 20px;
+  padding: 24px 32px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -395,7 +396,7 @@ body.about-page {
   justify-content: center;
   align-items: flex-start;
   gap: 24px;
-  padding: 0 20px;
+  padding: 0 32px;
 }
 
 .reel-crop {
@@ -419,7 +420,7 @@ body.about-page {
   gap: 64px;
   align-items: center;
   justify-content: center;
-  padding: 0 40px;
+  padding: 0 32px;
 }
 
 .interests-row img {
@@ -1641,9 +1642,52 @@ body.about-page {
   background: #fff;
 }
 
+/* About: 32px side gutters on desktop (matches home + top nav), 20px on phones */
+@media (max-width: 700px) {
+  .about-intro {
+    padding: 32px 20px;
+  }
+  .work-card {
+    padding: 24px 20px;
+  }
+  .about-block-header,
+  .reel-embed,
+  .interests-row {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Same type as home on every top-nav page: Urbanist for text, Average for headings */
+body.has-topnav {
+  font-family: "Urbanist", sans-serif;
+}
+
+body.has-topnav .about-intro-text h2,
+body.has-topnav .about-block-header h3 {
+  font-family: "Average", serif;
+  font-weight: 400;
+  font-size: 32px;
+}
+
+@media (max-width: 700px) {
+  body.has-topnav .about-intro-text h2,
+  body.has-topnav .about-block-header h3 {
+    font-size: 26px;
+  }
+}
+
 /* ---------- home ---------- */
-.home-page .layout {
+/* pages with the shared top nav: same 1200px column as home, nav stacked above content */
+body.has-topnav .layout {
   max-width: 1200px;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* the top nav already draws the line above the first card */
+body.has-topnav .feed > .card:first-child {
+  border-top: none;
 }
 
 .home {
@@ -1666,7 +1710,8 @@ body.about-page {
   font-family: "Average", serif;
 }
 
-.home-topnav {
+/* shared top navigation (home, about, playground) */
+.site-topnav {
   position: sticky;
   top: 0;
   z-index: 40;
@@ -1678,21 +1723,22 @@ body.about-page {
   background: var(--bg);
   border: 1px solid var(--border);
   border-top: none;
+  font-family: "Urbanist", sans-serif;
   font-size: 18px;
 }
 
-.home-topnav a {
+.site-topnav a {
   color: #8a8a8a;
   transition: color 0.15s ease;
 }
 
-.home-topnav a:hover,
-.home-topnav a.active {
-  color: var(--text);
+.site-topnav a:hover,
+.site-topnav a.active {
+  color: var(--highlight);
 }
 
 @media (max-width: 900px) {
-  .home-topnav {
+  .site-topnav {
     display: none;
   }
 }
@@ -2313,7 +2359,7 @@ body.about-page {
 
 .home-kind-stack.is-inview .home-kind-card[data-pos="0"] mark {
   background-size: 100% 62%;
-  color: #f1dc9c;
+  color: var(--highlight);
   transition: background-size 0.7s cubic-bezier(0.6, 0, 0.3, 1), color 0.5s ease;
   transition-delay: calc(0.45s + var(--i) * 0.45s);
 }
@@ -2343,10 +2389,17 @@ body.about-page {
    Inspired by a ruled "spec sheet" footer: a line grid of labelled cells, the eyes as the
    brand mark, and an outlined name drawn like a blueprint between rulers. */
 .home-footer {
+  /* self-contained so it works outside <main class="home"> on other pages */
+  --home-line: rgba(255, 255, 255, 0.2);
+  font-family: "Urbanist", sans-serif;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--home-line);
   border-top: none;
+}
+
+.home-footer :where(p) {
+  margin: 0;
 }
 
 .home-footer-grid {
@@ -2418,7 +2471,7 @@ body.about-page {
 
 .home-footer-links a:hover,
 .home-footer-value a:hover {
-  color: #f1dc9c;
+  color: var(--highlight);
 }
 
 .home-footer-links a:hover svg,
@@ -2428,7 +2481,7 @@ body.about-page {
 }
 
 .home-footer-links a.active {
-  color: #f1dc9c;
+  color: var(--highlight);
 }
 
 .home-footer-value {
@@ -2513,7 +2566,7 @@ body.about-page {
 }
 
 .home-footer-top:hover {
-  color: #f1dc9c;
+  color: var(--highlight);
 }
 
 @media (prefers-reduced-motion: reduce) {
