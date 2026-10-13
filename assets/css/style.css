@@ -269,74 +269,199 @@ body.about-page {
   pointer-events: none;
 }
 
-.about-intro {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  padding: 32px;
+/* About intro: bento photo collage with the greeting top-left and the tenure line bottom-right.
+   4 columns x 3 rows; text uses the heading serif with a soft top-to-bottom fade. */
+.about-collage {
+  padding: 56px 32px;
   border-bottom: 1px solid var(--border);
 }
 
-.about-intro-text {
+.about-collage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 260px 190px 170px;
+  gap: 10px;
+  grid-template-areas:
+    "hey   hey   b     c"
+    "d     e     f     c"
+    "d     g     since since";
+}
+
+.about-tile {
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  /* staggered fade-up on load; --d set per tile below */
+  opacity: 0;
+  transform: translateY(16px);
+  animation: about-tile-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+.about-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.about-tile:hover img {
+  transform: scale(1.05);
+}
+
+.about-tile--hey   { grid-area: hey;   --d: 0s; }
+.about-tile--b     { grid-area: b;     --d: 0.08s; }
+.about-tile--c     { grid-area: c;     --d: 0.16s; }
+.about-tile--d     { grid-area: d;     --d: 0.24s; }
+.about-tile--e     { grid-area: e;     --d: 0.32s; }
+.about-tile--f     { grid-area: f;     --d: 0.4s; }
+.about-tile--g     { grid-area: g;     --d: 0.48s; }
+.about-tile--since { grid-area: since; --d: 0.56s; }
+
+.about-tile--hey,
+.about-tile--since {
+  border-radius: 0;
+  overflow: visible;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
-.about-intro-text h2 {
+.about-tile--hey {
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 4px 24px 0 0;
+}
+
+.about-tile--hey p {
   margin: 0;
-  font-size: 24px;
-  font-weight: 500;
-  color: var(--text);
+  max-width: 420px;
+  font-size: 18px;
+  color: #8a8a8a;
 }
 
-.about-intro-text p {
+.about-tile--since {
+  justify-content: flex-end;
+  padding: 0 0 0 8px;
+}
+
+.about-collage-title {
   margin: 0;
-  font-size: 16px;
-  color: #808080;
+  font-family: "Average", serif;
+  font-weight: 400;
+  font-size: 72px;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #8f8f8f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.about-photos {
-  width: 100%;
-  overflow: hidden;
+.about-tile--since .about-collage-title {
+  font-size: 48px;
+  line-height: 1.05;
 }
 
-.about-photos-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  animation: about-ticker 22s linear infinite;
+.about-collage-title span {
+  background: linear-gradient(180deg, #fff3cf 0%, var(--highlight) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.about-photos:hover .about-photos-track {
-  animation-play-state: paused;
-}
-
-.about-photos-track img {
-  height: 335px;
-  width: 232px;
-  flex-shrink: 0;
-  border-radius: 26px;
-  object-fit: cover;
-}
-
-@keyframes about-ticker {
-  from {
-    transform: translateX(0);
-  }
+@keyframes about-tile-in {
   to {
-    transform: translateX(-50%);
+    opacity: 1;
+    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-photos-track {
+  .about-tile {
+    opacity: 1;
+    transform: none;
     animation: none;
-    overflow-x: auto;
   }
+  .about-tile img {
+    transition: none;
+  }
+}
 
-  .about-photos-track img[aria-hidden] {
-    display: none;
+/* About: "How it started" story — eyebrow, fading serif title, grey body with key phrases in white */
+.about-story {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 56px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-story p {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #8a8a8a;
+}
+
+.about-story p + p {
+  margin-top: 8px;
+}
+
+.about-story strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.about-story .about-story-eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #737373;
+}
+
+.about-story-title {
+  margin: 0 0 8px;
+  font-family: "Average", serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #ffffff 0%, #8f8f8f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.about-story-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.about-story-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: #b3b3b3;
+  transition: color 0.2s ease;
+}
+
+.about-story-links a:hover {
+  color: var(--highlight);
+}
+
+@media (max-width: 700px) {
+  .about-story {
+    padding: 40px 20px;
+  }
+  .about-story-title {
+    font-size: 36px;
+  }
+  .about-story p {
+    font-size: 17px;
   }
 }
 
@@ -363,32 +488,9 @@ body.about-page {
   color: var(--text);
 }
 
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3px;
-}
 
-.work-card {
-  background: #161616;
-  border: 1px solid #808080;
-  padding: 24px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
 
-.work-title {
-  margin: 0;
-  font-size: 20px;
-  color: var(--text);
-}
 
-.work-date {
-  margin: 0;
-  font-size: 16px;
-  color: #5b5b5b;
-}
 
 .reel-embed {
   display: flex;
@@ -443,9 +545,6 @@ body.about-page {
 }
 
 @media (max-width: 700px) {
-  .work-grid {
-    grid-template-columns: 1fr;
-  }
 
   .interests-row {
     flex-wrap: wrap;
@@ -1644,11 +1743,33 @@ body.about-page {
 
 /* About: 32px side gutters on desktop (matches home + top nav), 20px on phones */
 @media (max-width: 700px) {
-  .about-intro {
+  .about-collage {
     padding: 32px 20px;
   }
-  .work-card {
-    padding: 24px 20px;
+  .about-collage-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 220px 160px 160px auto;
+    grid-template-areas:
+      "hey   hey"
+      "c     b"
+      "c     e"
+      "d     f"
+      "since since";
+  }
+  .about-tile--g {
+    display: none;
+  }
+  .about-tile--hey {
+    padding: 0 0 12px;
+  }
+  .about-tile--since {
+    padding: 12px 0 0;
+  }
+  .about-collage-title {
+    font-size: 52px;
+  }
+  .about-tile--since .about-collage-title {
+    font-size: 34px;
   }
   .about-block-header,
   .reel-embed,
@@ -1663,7 +1784,6 @@ body.has-topnav {
   font-family: "Urbanist", sans-serif;
 }
 
-body.has-topnav .about-intro-text h2,
 body.has-topnav .about-block-header h3 {
   font-family: "Average", serif;
   font-weight: 400;
@@ -1671,7 +1791,6 @@ body.has-topnav .about-block-header h3 {
 }
 
 @media (max-width: 700px) {
-  body.has-topnav .about-intro-text h2,
   body.has-topnav .about-block-header h3 {
     font-size: 26px;
   }
