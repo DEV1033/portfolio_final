@@ -2589,6 +2589,127 @@ body.has-topnav .feed > .card:first-child {
   }
 }
 
+/* Work Experience: company cards (tool-card surface) + line-art illustration */
+.home-work-exp {
+  gap: 24px;
+  padding: 40px 32px;
+}
+
+.home-work-exp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 34px 0 0;
+}
+
+.home-work-exp .home-heading {
+  padding: 0;
+}
+
+.home-work-exp-sub {
+  margin-top: 8px;
+  font-size: 20px;
+  color: #737373;
+}
+
+/* outlined button, same line + hover language as the testimonial arrows */
+.home-btn {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  border: 1px solid var(--home-line);
+  font-size: 16px;
+  color: var(--text);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--highlight);
+}
+
+.home-work-exp-body {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.home-jobs {
+  flex: 1 0 0;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-job {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 2px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.home-job:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-left-color: var(--highlight);
+}
+
+.home-job-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-job-logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-job-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* mark-only logos sit at 24px inside the tinted tile (as in Figma) */
+.home-job-logo--inset img {
+  width: 24px;
+  height: 24px;
+}
+
+.home-job-company {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.home-job-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 18px;
+  color: #737373;
+}
+
+.home-work-exp-art {
+  flex: 1 0 0;
+  min-width: 0;
+  max-width: 460px;
+  height: auto;
+  margin: 0 auto;
+}
+
 @media (max-width: 1100px) {
   .home h1 {
     font-size: 64px;
@@ -2662,6 +2783,36 @@ body.has-topnav .feed > .card:first-child {
   }
   .home-tools-grid {
     flex-direction: column;
+  }
+  .home-work-exp {
+    padding: 28px 20px;
+  }
+  .home-work-exp-head {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 0;
+  }
+  .home-work-exp-sub {
+    font-size: 17px;
+  }
+  .home-work-exp-body {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .home-jobs,
+  .home-work-exp-art {
+    flex: none;
+  }
+  .home-work-exp-art {
+    max-width: 220px;
+  }
+  .home-job {
+    padding: 20px;
+  }
+  .home-job-meta {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 16px;
   }
   .home-footer-grid {
     grid-template-columns: 1fr;
