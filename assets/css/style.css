@@ -269,122 +269,396 @@ body.about-page {
   pointer-events: none;
 }
 
-/* About intro: bento photo collage with the greeting top-left and the tenure line bottom-right.
-   4 columns x 3 rows; text uses the heading serif with a soft top-to-bottom fade. */
-.about-collage {
-  padding: 56px 32px;
+/* About intro — scrapbook (layout inspired by a "Nice to meet you!" collage): photos on grid paper,
+   taped polaroids, the eyes as a "click me" camera, a folder that opens on hover and dashed sticker tags.
+   Everything inside .scrap is placed in % and sized with cqw so the whole board scales as one piece. */
+.about-meet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 64px 32px 56px;
   border-bottom: 1px solid var(--border);
 }
 
-.about-collage-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 260px 190px 170px;
-  gap: 10px;
-  grid-template-areas:
-    "hey   hey   b     c"
-    "d     e     f     c"
-    "d     g     since since";
-}
-
-.about-tile {
-  margin: 0;
-  min-width: 0;
-  min-height: 0;
-  border-radius: 20px;
-  overflow: hidden;
-  /* staggered fade-up on load; --d set per tile below */
-  opacity: 0;
-  transform: translateY(16px);
-  animation: about-tile-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: var(--d, 0s);
-}
-
-.about-tile img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.about-tile:hover img {
-  transform: scale(1.05);
-}
-
-.about-tile--hey   { grid-area: hey;   --d: 0s; }
-.about-tile--b     { grid-area: b;     --d: 0.08s; }
-.about-tile--c     { grid-area: c;     --d: 0.16s; }
-.about-tile--d     { grid-area: d;     --d: 0.24s; }
-.about-tile--e     { grid-area: e;     --d: 0.32s; }
-.about-tile--f     { grid-area: f;     --d: 0.4s; }
-.about-tile--g     { grid-area: g;     --d: 0.48s; }
-.about-tile--since { grid-area: since; --d: 0.56s; }
-
-.about-tile--hey,
-.about-tile--since {
-  border-radius: 0;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-}
-
-.about-tile--hey {
-  justify-content: flex-start;
-  gap: 16px;
-  padding: 4px 24px 0 0;
-}
-
-.about-tile--hey p {
-  margin: 0;
-  max-width: 420px;
-  font-size: 18px;
-  color: #8a8a8a;
-}
-
-.about-tile--since {
-  justify-content: flex-end;
-  padding: 0 0 0 8px;
-}
-
-.about-collage-title {
+.about-meet-title {
   margin: 0;
   font-family: "Average", serif;
   font-weight: 400;
-  font-size: 72px;
-  line-height: 1;
+  font-size: 56px;
+  line-height: 1.1;
+  text-align: center;
   background: linear-gradient(180deg, #ffffff 0%, #8f8f8f 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.about-tile--since .about-collage-title {
-  font-size: 48px;
-  line-height: 1.05;
+.scrap {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  aspect-ratio: 780 / 620;
+  container-type: inline-size;
 }
 
-.about-collage-title span {
-  background: linear-gradient(180deg, #fff3cf 0%, var(--highlight) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
+.scrap > * {
+  position: absolute;
 }
 
-@keyframes about-tile-in {
-  to {
-    opacity: 1;
-    transform: none;
+.scrap-paper {
+  left: 19%;
+  top: 0;
+  width: 62%;
+  height: 86%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 2.6cqw 2.6cqw,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 2.6cqw 2.6cqw,
+    #0d0d0d;
+}
+
+/* photos: white "print" borders like real snapshots */
+.scrap-photo {
+  margin: 0;
+  padding: 1.1cqw 1.1cqw 3.2cqw;
+  background: #f4f1ea;
+  box-shadow: 0 1.4cqw 3cqw rgba(0, 0, 0, 0.55);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scrap-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scrap-photo--main {
+  left: 31%;
+  top: 7%;
+  width: 38%;
+  height: 72%;
+  padding-bottom: 1.1cqw;
+  z-index: 2;
+}
+
+.scrap-photo--left {
+  left: 15%;
+  top: 11%;
+  width: 21%;
+  height: 34%;
+  transform: rotate(-6deg);
+  z-index: 3;
+}
+
+.scrap-photo--right {
+  left: 65%;
+  top: 12%;
+  width: 20%;
+  height: 33%;
+  transform: rotate(5deg);
+  z-index: 3;
+}
+
+.scrap-photo--left:hover {
+  transform: rotate(-2deg) scale(1.06);
+  z-index: 6;
+}
+
+.scrap-photo--right:hover {
+  transform: rotate(2deg) scale(1.06);
+  z-index: 6;
+}
+
+/* translucent strip of gold tape holding each polaroid */
+.scrap-tape {
+  position: absolute;
+  left: 50%;
+  top: -1.4cqw;
+  width: 9cqw;
+  height: 2.6cqw;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(241, 220, 156, 0.55);
+  backdrop-filter: blur(1px);
+}
+
+/* the eyes stand in for a camera: click to "take a photo" */
+.scrap-eyes {
+  left: 5%;
+  top: 60%;
+  width: 22%;
+  padding: 1.6cqw;
+  border: none;
+  border-radius: 999px;
+  background: #1a1a1a;
+  box-shadow: 0 1.4cqw 3cqw rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transform: rotate(-8deg);
+  z-index: 5;
+  transition: transform 0.25s ease;
+}
+
+.scrap-eyes svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scrap-eyes:hover {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+.scrap-eyes:active {
+  transform: rotate(-4deg) scale(0.96);
+}
+
+.scrap-eyes .pupil {
+  transition: transform 0.12s ease-out;
+}
+
+.scrap-click {
+  left: 0;
+  top: 54%;
+  transform: rotate(-14deg);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: max(11px, 1.8cqw);
+  color: var(--highlight);
+  white-space: nowrap;
+}
+
+.scrap-sticker {
+  left: 71%;
+  top: 50%;
+  width: 9%;
+  height: auto;
+  transform: rotate(14deg);
+  filter: drop-shadow(0 0.8cqw 1.2cqw rgba(0, 0, 0, 0.5));
+  z-index: 4;
+  transition: transform 0.3s ease;
+}
+
+.scrap-sticker:hover {
+  transform: rotate(-6deg) scale(1.12);
+}
+
+/* folder: back panel, logo cards that rise on hover, front flap that tilts open */
+.scrap-folder {
+  left: 67%;
+  top: 64%;
+  width: 26%;
+  height: 22%;
+  transform: rotate(-4deg);
+  z-index: 5;
+  outline: none;
+  perspective: 600px;
+}
+
+.scrap-folder-back {
+  position: absolute;
+  inset: 0;
+  background: #b89a45;
+  clip-path: polygon(0 12%, 6% 0, 38% 0, 44% 12%, 100% 12%, 100% 100%, 0 100%);
+}
+
+.scrap-folder-cards {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 14%;
+  display: flex;
+  justify-content: center;
+  gap: 4%;
+  transform: translateY(18%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scrap-folder-cards span {
+  width: 26%;
+  aspect-ratio: 1;
+  border-radius: 0.8cqw;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.4cqw 1cqw rgba(0, 0, 0, 0.4);
+}
+
+.scrap-folder-cards img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+.scrap-folder-front {
+  position: absolute;
+  inset: 26% 0 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 7% 9%;
+  background: linear-gradient(180deg, #e6c96f, #d4b457);
+  box-shadow: 0 1cqw 2.4cqw rgba(0, 0, 0, 0.5);
+  transform-origin: 50% 100%;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.scrap-folder-title {
+  font-family: "Average", serif;
+  font-size: max(12px, 2.6cqw);
+  color: #1a1404;
+}
+
+.scrap-folder-sub {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: max(7px, 1.2cqw);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 20, 4, 0.65);
+}
+
+.scrap-folder:hover .scrap-folder-cards,
+.scrap-folder:focus-visible .scrap-folder-cards {
+  transform: translateY(-62%);
+}
+
+.scrap-folder:hover .scrap-folder-front,
+.scrap-folder:focus-visible .scrap-folder-front {
+  transform: rotateX(-28deg);
+}
+
+/* dashed sticker tags */
+.scrap-tag {
+  padding: 1cqw 2cqw;
+  border-radius: 1.2cqw;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: max(8px, 1.5cqw);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  outline: 1px dashed currentColor;
+  outline-offset: -0.6cqw;
+  box-shadow: 0 0.8cqw 1.6cqw rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  transition: transform 0.25s ease;
+}
+
+.scrap-tag--dark {
+  left: 38%;
+  top: 77%;
+  background: #1c1c1c;
+  color: #e8e8e8;
+  transform: rotate(3deg);
+}
+
+.scrap-tag--gold {
+  left: 20%;
+  top: 85%;
+  background: var(--highlight);
+  color: #2a2208;
+  transform: rotate(-5deg);
+}
+
+.scrap-tag--soft {
+  left: 52%;
+  top: 87%;
+  background: #2a2a2a;
+  color: var(--highlight);
+  transform: rotate(6deg);
+}
+
+.scrap-tag:hover {
+  transform: rotate(0deg) scale(1.06);
+}
+
+/* camera flash when the eyes are clicked */
+.scrap-flash {
+  inset: 0;
+  background: radial-gradient(circle at 18% 66%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 60%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 7;
+}
+
+.scrap.is-flashing .scrap-flash {
+  animation: scrap-flash 0.45s ease-out;
+}
+
+@keyframes scrap-flash {
+  0% {
+    opacity: 0;
   }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* intro copy: centered, grey, key phrases white, tiny logo chips inline */
+.about-meet-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+  text-align: center;
+}
+
+.about-meet-copy p {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.65;
+  color: #8a8a8a;
+}
+
+.about-meet-copy strong {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.meet-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin: 0 6px 0 2px;
+  border-radius: 6px;
+  vertical-align: -6px;
+  overflow: hidden;
+}
+
+.meet-logo img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about-tile {
-    opacity: 1;
-    transform: none;
+  .scrap-photo,
+  .scrap-eyes,
+  .scrap-sticker,
+  .scrap-folder-cards,
+  .scrap-folder-front,
+  .scrap-tag {
+    transition: none;
+  }
+  .scrap.is-flashing .scrap-flash {
     animation: none;
   }
-  .about-tile img {
-    transition: none;
+}
+
+@media (max-width: 700px) {
+  .about-meet {
+    padding: 40px 20px 44px;
+    gap: 24px;
+  }
+  .about-meet-title {
+    font-size: 40px;
+  }
+  .about-meet-copy p {
+    font-size: 17px;
   }
 }
 
@@ -1743,34 +2017,6 @@ body.about-page {
 
 /* About: 32px side gutters on desktop (matches home + top nav), 20px on phones */
 @media (max-width: 700px) {
-  .about-collage {
-    padding: 32px 20px;
-  }
-  .about-collage-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 220px 160px 160px auto;
-    grid-template-areas:
-      "hey   hey"
-      "c     b"
-      "c     e"
-      "d     f"
-      "since since";
-  }
-  .about-tile--g {
-    display: none;
-  }
-  .about-tile--hey {
-    padding: 0 0 12px;
-  }
-  .about-tile--since {
-    padding: 12px 0 0;
-  }
-  .about-collage-title {
-    font-size: 52px;
-  }
-  .about-tile--since .about-collage-title {
-    font-size: 34px;
-  }
   .about-block-header,
   .reel-embed,
   .interests-row {
