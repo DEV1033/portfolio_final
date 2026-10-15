@@ -1,388 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dev Chaudhary</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Average&family=Urbanist:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pixel Studio · Portfolio</title>
+  <meta name="description" content="An interactive pixel-art studio portfolio. Walk around, click things, pet the cat.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="home-page has-topnav">
-  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-  </button>
-  <div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
-  <nav class="mobile-menu" id="mobileMenu">
-    <a href="index.html" class="active">Home</a>
-    <a href="about.html">About</a>
-    <a href="playground.html">Playground</a>
-    <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble</a>
-    <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
-  </nav>
+<body>
+  <canvas id="game" tabindex="0" aria-label="Pixel studio — walk with WASD or arrow keys, press E to interact"></canvas>
 
-  <div class="page">
-    <div class="layout">
+  <!-- HUD -->
+  <div id="hud">
+    <div class="who">
+      <div class="avatar"></div>
+      <div class="who-text">
+        <b id="profile-name"></b>
+        <small id="profile-role"></small>
+        <div class="progress-row"><div class="progress"><div id="progress-bar"></div></div><small id="progress-text" class="progress-text"></small></div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="pixel-btn" id="btn-menu" title="Quick menu (skip the walking)">☰ <span>Menu</span></button>
+      <button class="pixel-btn icon" id="btn-night" title="Night mode (N)">☾</button>
+      <button class="pixel-btn icon" id="btn-music" title="Music (M)">♪</button>
+      <button class="pixel-btn icon on" id="btn-sound" title="Sound effects">🔊</button>
+    </div>
+    <!-- on-screen controls: click/hold or touch; they also light up when the keyboard is used -->
+    <div id="pad" aria-label="Movement controls">
+      <div class="dpad">
+        <button class="up" data-key="w" aria-label="Walk up (W / ↑)"><span>▲</span><kbd>W</kbd></button>
+        <button class="left" data-key="a" aria-label="Walk left (A / ←)"><span>◀</span><kbd>A</kbd></button>
+        <button class="down" data-key="s" aria-label="Walk down (S / ↓)"><span>▼</span><kbd>S</kbd></button>
+        <button class="right" data-key="d" aria-label="Walk right (D / →)"><span>▶</span><kbd>D</kbd></button>
+      </div>
+      <div class="actions">
+        <button class="act" id="pad-e" data-key="e" aria-label="Interact (E)">E<small>use</small></button>
+        <button class="run" data-key="shift" aria-label="Hold to run (Shift)">⇧<small>run</small></button>
+      </div>
+    </div>
+    <div id="hint">WASD / arrows to walk · Shift to run · E to interact · or click anything</div>
+  </div>
 
-      <main class="home">
-        <nav class="site-topnav">
-          <a href="index.html" class="active">Home</a>
-          <a href="about.html">About</a>
-          <a href="playground.html">Playground</a>
-          <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble</a>
-          <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
-        </nav>
-
-        <section class="home-hero">
-          <div class="home-hero-top">
-            <div class="home-hero-text">
-              <h1>Dev Chaudhary</h1>
-              <p>Aspiring Product Designer with a taste of Tech , Aesthetics &amp; Product Thinking</p>
-            </div>
-            <svg class="home-hero-eyes js-eyes" id="heroEyes" width="164" height="78" viewBox="0 0 164 78.0139" fill="none" aria-hidden="true">
-              <g class="eye">
-                <circle cx="39.0069" cy="39.0069" r="39.0069" fill="#D9D9D9" />
-                <circle class="pupil" cx="38.5" cy="39.5" r="15.5" fill="black" />
-              </g>
-              <g class="eye">
-                <circle cx="124.993" cy="39.0069" r="39.0069" fill="#D9D9D9" />
-                <circle class="pupil" cx="124.5" cy="39.5" r="15.5" fill="black" />
-              </g>
-            </svg>
-          </div>
-
-          <div class="home-skills">
-            <ul class="home-skills-track">
-              <li>Prototyping</li>
-              <li>AI Assisted Workflow</li>
-              <li>User Research</li>
-              <li>Design Thinking</li>
-              <li>Product Thinking</li>
-              <li aria-hidden="true">Prototyping</li>
-              <li aria-hidden="true">AI Assisted Workflow</li>
-              <li aria-hidden="true">User Research</li>
-              <li aria-hidden="true">Design Thinking</li>
-              <li aria-hidden="true">Product Thinking</li>
-            </ul>
-          </div>
-
-          <div class="home-github">
-            <div class="github-graph" id="githubGraph"></div>
-          </div>
-
-          <div class="home-roles">
-            <p>Current @ Easycomm.io</p>
-            <p>Previously @ Goodspace.ai , GeeksforGeeks</p>
-          </div>
-        </section>
-
-        <section class="home-block">
-          <h2 class="home-heading">Selected Works</h2>
-          <article class="home-work">
-            <div class="home-work-media">
-              <video src="assets/media/goodex-showcase.mp4" poster="assets/img/home/goodex-thumbnail.png" autoplay muted loop playsinline preload="metadata" aria-label="Goodex — AI-powered candidate search"></video>
-            </div>
-            <div class="home-work-body">
-              <p class="home-work-title">Helping recruiters discover the right talent, faster</p>
-              <div class="home-work-tags">
-                <span>Internal Tool</span>
-                <span>Early Stage Startup</span>
-                <span>0 → 1</span>
-              </div>
-            </div>
-          </article>
-          <article class="home-work">
-            <div class="home-work-media">
-              <video src="assets/media/trustyy-showcase.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Trustyy Reviews — Shopify app revamp"></video>
-            </div>
-            <div class="home-work-body">
-              <p class="home-work-title">A revamp that reached 497 merchants in July, with 260 installs and 22% merchant growth</p>
-              <div class="home-work-tags">
-                <span>Shopify App</span>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <section class="home-block home-experiments">
-          <h2 class="home-heading">Some motion experiments</h2>
-          <div class="home-experiments-ticker" id="experimentsTicker">
-            <ul class="home-experiments-track">
-              <li><video src="assets/media/experiments/exp-01.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li><video src="assets/media/experiments/exp-02.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li><video src="assets/media/experiments/exp-03.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li><video src="assets/media/experiments/exp-04.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li><video src="assets/media/experiments/exp-05.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li aria-hidden="true"><video src="assets/media/experiments/exp-01.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li aria-hidden="true"><video src="assets/media/experiments/exp-02.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li aria-hidden="true"><video src="assets/media/experiments/exp-03.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li aria-hidden="true"><video src="assets/media/experiments/exp-04.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-              <li aria-hidden="true"><video src="assets/media/experiments/exp-05.mp4" autoplay muted loop playsinline preload="metadata"></video></li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="home-block home-featured">
-          <h2 class="home-heading">Some featured design</h2>
-          <div class="home-featured-row">
-            <div class="home-featured-track">
-              <div class="home-phone home-phone--pro">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame-pro.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-1.webp" alt="VyanEx app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-5.webp" alt="Check-in app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-6.webp" alt="Check-in app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-2.webp" alt="VyanEx app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-7.webp" alt="Check-in app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-3.webp" alt="VyanEx app screen" />
-              </div>
-              <div class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-4.webp" alt="VyanEx app screen" />
-              </div>
-              <div aria-hidden="true" class="home-phone home-phone--pro">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame-pro.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-1.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-5.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-6.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-2.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-7.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-3.webp" alt="" />
-              </div>
-              <div aria-hidden="true" class="home-phone">
-                <img class="home-phone-frame" src="assets/img/home/featured/frame.webp" alt="" />
-                <img class="home-phone-screen" src="assets/img/home/featured/screen-4.webp" alt="" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="home-block home-tools">
-          <h2 class="home-heading">Skilled in the Tool that matters</h2>
-          <div class="home-logos">
-            <ul class="home-logos-track">
-              <li><img src="assets/img/home/tool-gemini.svg" width="157" height="36" alt="Gemini" /></li>
-              <li><img src="assets/img/home/tool-lottiefiles.svg" width="253" height="51" alt="LottieFiles" /></li>
-              <li><img src="assets/img/home/tool-framer.svg" width="119" height="38" alt="Framer" /></li>
-              <li class="home-logo-lockup"><img src="assets/img/home/tool-github.svg" width="40" height="40" alt="" /><span>GitHub</span></li>
-              <li><img src="assets/img/home/tool-vscode.svg" width="125" height="57" alt="Visual Studio Code" /></li>
-              <li aria-hidden="true"><img src="assets/img/home/tool-gemini.svg" width="157" height="36" alt="" /></li>
-              <li aria-hidden="true"><img src="assets/img/home/tool-lottiefiles.svg" width="253" height="51" alt="" /></li>
-              <li aria-hidden="true"><img src="assets/img/home/tool-framer.svg" width="119" height="38" alt="" /></li>
-              <li aria-hidden="true" class="home-logo-lockup"><img src="assets/img/home/tool-github.svg" width="40" height="40" alt="" /><span>GitHub</span></li>
-              <li aria-hidden="true"><img src="assets/img/home/tool-vscode.svg" width="125" height="57" alt="" /></li>
-            </ul>
-          </div>
-          <div class="home-tools-grid">
-            <div class="home-tool">
-              <img src="assets/img/home/figma-logo.svg" width="44" height="44" alt="" />
-              <div>
-                <p class="home-tool-name">Figma</p>
-                <p class="home-tool-desc">Intermediate-level UI/UX design, prototyping, auto-layout, component libraries and design systems.</p>
-              </div>
-            </div>
-            <div class="home-tool">
-              <img src="assets/img/home/claude-logo.svg" width="44" height="44" alt="" />
-              <div>
-                <p class="home-tool-name">Claude</p>
-                <p class="home-tool-desc">Designed and built website from scratch using Claude chat and design - from design system to deployment.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="home-block home-work-exp">
-          <div class="home-work-exp-head">
-            <div>
-              <h2 class="home-heading">Work Experience</h2>
-              <p class="home-work-exp-sub">My design journey so far</p>
-            </div>
-            <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link home-btn" target="_blank" rel="noopener">View Resume</a>
-          </div>
-          <div class="home-work-exp-body">
-            <ul class="home-jobs">
-              <li class="home-job">
-                <div class="home-job-head">
-                  <span class="home-job-logo home-job-logo--inset" style="background:rgba(11, 48, 129, 0.35)"><img src="assets/img/home/work/logo-easycomm.webp" width="48" height="48" alt="" /></span>
-                  <p class="home-job-company">Easycomm Innovations</p>
-                </div>
-                <div class="home-job-meta">
-                  <span>UI/UX Designer</span>
-                  <span>Apr ’26 – Present</span>
-                </div>
-              </li>
-              <li class="home-job">
-                <div class="home-job-head">
-                  <span class="home-job-logo" style="background:rgba(39, 99, 255, 0.2)"><img src="assets/img/home/work/logo-goodspace.webp" width="48" height="48" alt="" /></span>
-                  <p class="home-job-company">Goodspace AI</p>
-                </div>
-                <div class="home-job-meta">
-                  <span>Product Designer</span>
-                  <span>Jan ’26 – Mar ’26</span>
-                </div>
-              </li>
-              <li class="home-job">
-                <div class="home-job-head">
-                  <span class="home-job-logo" style="background:#ffffff"><img src="assets/img/home/work/logo-stealth.webp" width="48" height="48" alt="" /></span>
-                  <p class="home-job-company">Stealth</p>
-                </div>
-                <div class="home-job-meta">
-                  <span>Freelance Designer</span>
-                  <span>Oct ’25 – Nov ’25</span>
-                </div>
-              </li>
-              <li class="home-job">
-                <div class="home-job-head">
-                  <span class="home-job-logo" style="background:rgba(2, 136, 96, 0.2)"><img src="assets/img/home/work/logo-gfg.webp" width="48" height="48" alt="" /></span>
-                  <p class="home-job-company">GeeksforGeeks</p>
-                </div>
-                <div class="home-job-meta">
-                  <span>UI/UX Design Intern</span>
-                  <span>Oct ’24 – Sept ’25</span>
-                </div>
-              </li>
-            </ul>
-            <img class="home-work-exp-art" src="assets/img/home/work/illustration.webp" width="640" height="676" alt="" />
-          </div>
-        </section>
-
-        <section class="home-block home-kind">
-          <h2 class="home-heading">Some kind words</h2>
-          <div class="home-kind-stack" id="kindStack" aria-roledescription="carousel" aria-label="Testimonials">
-            <figure class="home-kind-card" aria-roledescription="slide">
-              <blockquote>Working with Dev has been a <mark style="--i:0">game-changer</mark> for our product. Their <mark style="--i:1">eye for detail</mark>, <mark style="--i:2">user-first mindset</mark>, and ability to turn complex ideas into <mark style="--i:3">clean, intuitive designs</mark> greatly improved our user experience.</blockquote>
-              <figcaption><span class="home-kind-name">Arvind Tiwari</span><span class="home-kind-company">NetApp</span></figcaption>
-            </figure>
-            <figure class="home-kind-card" aria-roledescription="slide">
-              <blockquote>Dev is a <mark style="--i:0">highly reliable and creative</mark> teammate. He brings <mark style="--i:1">strong UI/UX expertise</mark> to the table and always ensures that designs are not only <mark style="--i:2">visually appealing</mark> but also <mark style="--i:3">user-friendly</mark>.</blockquote>
-              <figcaption><span class="home-kind-name">Ashutosh Patel</span><span class="home-kind-company">NuageBiz Tech</span></figcaption>
-            </figure>
-            <figure class="home-kind-card" aria-roledescription="slide">
-              <blockquote>Dev is a <mark style="--i:0">pleasure to work with</mark>. While working with us he showed the ability to <mark style="--i:1">think outside the box</mark> and handle unforeseen challenges with <mark style="--i:2">creative solutions</mark>. He helped us bring our ideas to reality.</blockquote>
-              <figcaption><span class="home-kind-name">Santosh Yadav</span><span class="home-kind-company">Anubit Solutions</span></figcaption>
-            </figure>
-          </div>
-          <div class="home-kind-controls">
-            <span class="home-kind-count" id="kindCount" aria-live="polite">01 / 03</span>
-            <div class="home-kind-arrows">
-              <button type="button" id="kindPrev" aria-label="Previous testimonial"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <button type="button" id="kindNext" aria-label="Next testimonial"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            </div>
-          </div>
-        </section>
-
-        <footer class="home-footer">
-          <div class="home-footer-grid">
-            <div class="home-footer-cell home-footer-statement">
-              <p>Have a project in mind? Let&rsquo;s design something thoughtful together.</p>
-            </div>
-            <div class="home-footer-cell">
-              <p class="home-footer-label">Pages</p>
-              <nav class="home-footer-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="about.html">About</a>
-                <a href="playground.html">Playground</a>
-                <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" class="resume-link" target="_blank" rel="noopener">Resume</a>
-              </nav>
-            </div>
-            <div class="home-footer-cell">
-              <p class="home-footer-label">Elsewhere</p>
-              <nav class="home-footer-links home-footer-links--2col">
-                <a href="https://www.linkedin.com/in/dev-chaudhary-7983a822a" target="_blank" rel="noopener">LinkedIn <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-                <a href="https://www.instagram.com/iamdc5203/" target="_blank" rel="noopener">Instagram <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-                <a href="https://dribbble.com/DevChaudhary523" target="_blank" rel="noopener">Dribbble <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-                <a href="https://github.com/DEV1033" target="_blank" rel="noopener">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-              </nav>
-            </div>
-            <div class="home-footer-cell home-footer-mark">
-              <svg class="home-hero-eyes home-footer-eyes js-eyes" width="164" height="78" viewBox="0 0 164 78.0139" fill="none" aria-hidden="true">
-                <g class="eye">
-                  <circle cx="39.0069" cy="39.0069" r="39.0069" fill="#D9D9D9" />
-                  <circle class="pupil" cx="38.5" cy="39.5" r="15.5" fill="black" />
-                </g>
-                <g class="eye">
-                  <circle cx="124.993" cy="39.0069" r="39.0069" fill="#D9D9D9" />
-                  <circle class="pupil" cx="124.5" cy="39.5" r="15.5" fill="black" />
-                </g>
-              </svg>
-            </div>
-
-            <div class="home-footer-cell">
-              <p class="home-footer-label">Currently</p>
-              <p class="home-footer-value">Designing @ <a href="https://easycomm.io" target="_blank" rel="noopener">Easycomm.io</a></p>
-            </div>
-            <div class="home-footer-cell">
-              <p class="home-footer-label">Previously</p>
-              <p class="home-footer-value">Goodspace.ai<br />GeeksforGeeks</p>
-            </div>
-            <div class="home-footer-cell">
-              <p class="home-footer-label">Say hello</p>
-              <p class="home-footer-value"><a href="https://www.linkedin.com/in/dev-chaudhary-7983a822a" target="_blank" rel="noopener">Message on LinkedIn <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
-            </div>
-          </div>
-
-          <div class="home-footer-blueprint" id="footerBlueprint">
-            <span class="bp-cross bp-cross--tl"></span><span class="bp-cross bp-cross--tr"></span>
-            <span class="bp-cross bp-cross--bl"></span><span class="bp-cross bp-cross--br"></span>
-            <svg class="home-footer-name" viewBox="0 0 1200 200" role="img" aria-label="Dev Chaudhary">
-              <g class="bp-guides">
-                <line x1="0" y1="34" x2="1200" y2="34" />
-                <line x1="0" y1="166" x2="1200" y2="166" />
-                <line x1="600" y1="14" x2="600" y2="186" />
-              </g>
-              <text x="600" y="166" text-anchor="middle" textLength="1140" lengthAdjust="spacingAndGlyphs">DEV CHAUDHARY</text>
-            </svg>
-          </div>
-
-          <div class="home-footer-bar">
-            <p>&copy; 2026 Dev Chaudhary. Designed in Figma, built with Claude.</p>
-            <a href="#" class="home-footer-top">Back to top <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          </div>
-        </footer>
-      </main>
+  <!-- quick menu -->
+  <div id="menu" class="modal" hidden>
+    <div class="sheet">
+      <header><span class="icon">☰</span><div><h2>Quick menu</h2><small>In a hurry? Pick a spot and I'll walk there.</small></div><button class="close" aria-label="Close">✕</button></header>
+      <div class="menu-list"></div>
     </div>
   </div>
 
-  <div class="resume-sidebar-backdrop" id="resumeSidebarBackdrop"></div>
-  <aside class="resume-sidebar" id="resumeSidebar">
-    <div class="resume-sidebar-bar">
-      <a href="assets/resume/DevChaudhary2026.pdf#zoom=100" target="_blank" rel="noopener">Open in new tab</a>
-      <button class="resume-sidebar-close" id="resumeSidebarClose" aria-label="Close"></button>
+  <!-- content panel -->
+  <div id="panel" class="modal" hidden>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <button class="close" aria-label="Close">✕</button>
+      <div id="panel-body"></div>
     </div>
-    <iframe class="resume-sidebar-frame" id="resumeSidebarFrame" title="Resume"></iframe>
-  </aside>
+  </div>
 
-  <script src="assets/js/utils.js"></script>
-  <script src="assets/js/home.js"></script>
+  <div id="toasts"></div>
+
+  <script src="assets/sprites.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>
