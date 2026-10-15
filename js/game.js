@@ -803,7 +803,7 @@
         let cells = '<i class="pad"></i>'.repeat(first);
         for (const d of GITHUB.days) {
           const day = new Date(d.date + 'T00:00:00Z').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-          cells += `<i class="l${d.level}" title="${esc(`${d.count} contribution${d.count === 1 ? '' : 's'} on ${day}`)}"></i>`;
+          cells += `<i class="l${d.level}" data-count="${d.count}" data-day="${esc(day)}" aria-label="${esc(`${d.count} contribution${d.count === 1 ? '' : 's'} on ${day}`)}"></i>`;
         }
         return `${title}<p class="contrib-total"><b>${GITHUB.total}</b> contributions in the last year</p>
           <div class="contrib-scroll"><div class="contrib year">${cells}</div></div>
@@ -855,6 +855,7 @@
   function closePanel() {
     if (!state.panelOpen) return;
     panelBody.querySelectorAll('video').forEach(v => v.pause()); // stop showcase/motion videos with the panel
+    hideContribTip();
     panel.classList.remove('open');
     state.panelOpen = false;
     clearInterval(clockTimer);
@@ -862,6 +863,45 @@
     cvs.focus();
   }
   panel.addEventListener('click', e => { if (e.target === panel || e.target.closest('.close')) closePanel(); });
+
+  // GitHub panel: instant pixel tooltip with the day's contribution count (hover, or tap on touch)
+  const contribTip = document.createElement('div');
+  contribTip.className = 'contrib-tip';
+  contribTip.hidden = true;
+  document.body.appendChild(contribTip);
+  let tipCell = null;
+  function showContribTip(cell) {
+    if (tipCell === cell) return;
+    tipCell?.classList.remove('active');
+    tipCell = cell;
+    cell.classList.add('active');
+    const n = Number(cell.dataset.count);
+    contribTip.innerHTML = `<b>${n === 0 ? 'No' : n} contribution${n === 1 ? '' : 's'}</b><small>${esc(cell.dataset.day)}</small>`;
+    contribTip.hidden = false;
+    const r = cell.getBoundingClientRect(), t = contribTip.getBoundingClientRect();
+    const x = Math.min(Math.max(8, r.left + r.width / 2 - t.width / 2), innerWidth - t.width - 8);
+    const above = r.top - t.height - 8;
+    contribTip.style.left = `${x}px`;
+    contribTip.style.top = `${above > 8 ? above : r.bottom + 8}px`;
+  }
+  function hideContribTip() {
+    tipCell?.classList.remove('active');
+    tipCell = null;
+    contribTip.hidden = true;
+  }
+  panelBody.addEventListener('pointerover', e => {
+    const cell = e.target.closest('.contrib i[data-count]');
+    if (cell) showContribTip(cell);
+  });
+  panelBody.addEventListener('pointerdown', e => {
+    const cell = e.target.closest('.contrib i[data-count]');
+    if (cell) showContribTip(cell);
+  });
+  panelBody.addEventListener('pointerout', e => {
+    if (e.pointerType === 'mouse' && e.target.closest('.contrib i[data-count]') && !e.relatedTarget?.closest?.('.contrib i[data-count]')) hideContribTip();
+  });
+  panelBody.closest('.sheet').addEventListener('scroll', hideContribTip, { passive: true });
+  panelBody.addEventListener('scroll', hideContribTip, { capture: true, passive: true }); // the grid's own sideways scroll
 
   // ── discovery progress ───────────────────────────────────────────────────
   const total = new Set(PANEL_KEYS).size;
@@ -899,10 +939,28 @@
   }
 
   // ── night & music toggles ────────────────────────────────────────────────
+  function setNight(on, message) {
+    state.night = on;
+    document.getElementById('btn-night').classList.toggle('on', on);
+    if (message) toast(message);
+  }
   function toggleNight() {
-    state.night = !state.night;
-    document.getElementById('btn-night').classList.toggle('on', state.night);
-    toast(state.night ? 'Night mode — lamps on 🌙' : 'Good morning ☀️');
+    setNight(!state.night, !state.night ? 'Night mode — lamps on 🌙' : 'Good morning ☀️');
+  }
+
+  // Day/night follows the visitor's local clock: night 6:30 PM – 5:30 AM, day 5:31 AM – 6:29 PM.
+  // The lamp / N key still switch it by hand; that holds until the next scheduled change.
+  const DAY_START = 5 * 60 + 31, NIGHT_START = 18 * 60 + 30; // minutes after midnight
+  function isNightNow(d = new Date()) {
+    const m = d.getHours() * 60 + d.getMinutes();
+    return m < DAY_START || m >= NIGHT_START;
+  }
+  let scheduledNight = isNightNow();
+  function followClock() {
+    const now = isNightNow();
+    if (now === scheduledNight) return;
+    scheduledNight = now;
+    setNight(now, now ? 'Evening — lamps on 🌙' : 'The sun is up — good morning ☀️');
   }
   function toggleMusic() {
     state.music = !state.music;
@@ -1033,7 +1091,7 @@
     if (!state.started || state.panelOpen) return;
     const [x, y] = screenToWorld(e.clientX, e.clientY);
     state.hover = hotspotAt(x, y);
-    cvs.style.cursor = state.hover ? 'pointer' : 'default';
+    cvs.classList.toggle('hovering', !!state.hover); // CSS swaps in the bitten-pizza cursor
   });
   cvs.addEventListener('pointerdown', e => {
     if (state.panelOpen) return;
@@ -1125,10 +1183,13 @@
     updateCamera(0);
     requestAnimationFrame(frame);
     start();
-    // URL flags (handy for testing / screenshots): ?night ?panel=about ?go=cat ?at=x,y ?debug ?sim=N
+    // URL flags (handy for testing / screenshots): ?night ?day ?panel=about ?go=cat ?at=x,y ?debug ?sim=N
     const q = new URLSearchParams(location.search);
     if (q.has('sim')) document.getElementById('hud').style.transition = 'none';
-    if (q.has('night')) { state.night = true; state.nightAmt = 1; }
+    // start in the mode the clock says (no fade on load); ?night / ?day force it for testing
+    const startNight = q.has('night') ? true : q.has('day') ? false : scheduledNight;
+    setNight(startNight); state.nightAmt = startNight ? 1 : 0;
+    if (!q.has('night') && !q.has('day')) setInterval(followClock, 30 * 1000);
     if (q.get('panel')) openPanel(q.get('panel'));
     if (q.get('go')) setTimeout(() => goTo(WD.hotspots.find(h => h.id === q.get('go'))), 200);
     if (q.get('at')) { const [x, y] = q.get('at').split(',').map(Number); player.x = x; player.y = y; }
