@@ -50,9 +50,27 @@ python tools/build_assets.py
 
 It also writes `tools/_contact_sheet.png` so you can eyeball every sprite.
 
+## Spotify via Last.fm (record player)
+
+The record player shows what Dev is playing on Spotify right now, or the last song played. Spotify's own Web API needs a Premium account, so the song comes from **Last.fm**, which Spotify scrobbles to. `functions/api/now-playing.js` is a Cloudflare Pages Function, served at `/api/now-playing`. It keeps the API key server-side, caches the answer at the edge for 30–60 s, and returns only title, artist, album art and a Spotify search link.
+
+One-time setup:
+
+1. Sign up at [last.fm](https://www.last.fm). Under **Settings → Applications**, connect **Spotify** so every song gets scrobbled.
+2. Create a free API key at [last.fm/api/account/create](https://www.last.fm/api/account/create). Any app name works and the callback URL can be blank.
+3. Cloudflare dashboard → **Workers & Pages** → this project → **Settings → Variables and Secrets**: add `LASTFM_API_KEY` (type **Secret**) and `LASTFM_USERNAME` (type **Text**) for **Production**, then redeploy.
+
+Until they're set, the panel just says it couldn't reach Spotify.
+
 ## Deploy
 
-It's a static site. Drop the folder on GitHub Pages, Netlify or Vercel. Only `index.html`, `css/`, `js/` and `assets/` are needed at runtime.
+Hosted on **Cloudflare Pages**, connected to this GitHub repo:
+
+- Workers & Pages → Create → Pages → **Connect to Git** → pick the repo.
+- Framework preset: **None**. Build command: *(leave empty)*. Build output directory: `/`.
+- Every push to `main` redeploys. `functions/` is picked up automatically as Pages Functions.
+
+Clean URLs work out of the box. With no `404.html`, Cloudflare serves `index.html` for unknown paths, so old links like `/about` land in the studio. At runtime the site needs `index.html`, `css/`, `js/`, `assets/`, `resume.pdf` and `functions/`.
 
 ## Debug flags
 

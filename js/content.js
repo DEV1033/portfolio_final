@@ -106,7 +106,9 @@ window.CONTENT = {
     title: 'Now Playing', icon: '♪',
     subtitle: 'What keeps me in flow',
     sections: [
-      { type: 'music' },
+      // live from Spotify (scrobbled to Last.fm) via /api/now-playing: playing now, else the last song played
+      { type: 'spotify', title: "On Dev's Spotify" },
+      { type: 'music', title: 'Studio radio' },
       { type: 'text', body: 'A little lo-fi loop for the studio. Every note is generated in code.' },
     ],
   },

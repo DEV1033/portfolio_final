@@ -16,7 +16,7 @@
 
   // ── state ────────────────────────────────────────────────────────────────
   const state = {
-    t: 0, night: false, nightAmt: 0, muted: false, music: false,
+    t: 0, night: false, nightAmt: 0, muted: false, music: false, spotify: null, spotifyStatus: 'loading',
     discovered: new Set(), panelOpen: false, started: false,
     hover: null, near: null, catPets: 0, celebrated: false,
   };
@@ -413,18 +413,21 @@
     ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 4, y + h + 2, w + 8, 4);
     ctx.fillStyle = '#0d1322'; ctx.fillRect(x, y, w, h);
     ctx.fillStyle = '#e8edf7'; ctx.font = `12px ${PIXEL_FONT}`; ctx.textBaseline = 'top'; ctx.textAlign = 'center';
-    ctx.fillText('NOW PLAYING', x + w / 2, y + 8);
+    // lo-fi loop if it's on; otherwise Dev's Spotify (live or last played)
+    const sp = !state.music && state.spotify;
+    ctx.fillText(sp ? (sp.playing ? 'DEV IS LISTENING' : 'LAST PLAYED') : 'NOW PLAYING', x + w / 2, y + 8);
     // marquee track title
     ctx.save(); ctx.beginPath(); ctx.rect(x + 8, y + 24, w - 16, 14); ctx.clip();
-    const title = state.music ? '♪ lofi.studio — build mode ♪   ' : 'paused · click the record player   ';
-    ctx.fillStyle = state.music ? '#8ef0a7' : '#7c869c'; ctx.textAlign = 'left'; ctx.font = `11px ${PIXEL_FONT}`;
+    const title = state.music ? '♪ lofi.studio — build mode ♪   '
+      : sp ? `♫ ${sp.title} — ${sp.artist}   ` : 'paused · click the record player   ';
+    ctx.fillStyle = state.music ? '#8ef0a7' : sp ? '#1ed760' : '#7c869c'; ctx.textAlign = 'left'; ctx.font = `11px ${PIXEL_FONT}`;
     const tw = ctx.measureText(title).width, off = (state.t * 30) % tw;
     ctx.fillText(title + title, x + 8 - off, y + 25);
     ctx.restore();
     // equalizer
     const bars = 22, bw = 5, bx = x + (w - bars * (bw + 2)) / 2, by = y + 72;
     for (let i = 0; i < bars; i++) {
-      const v = state.music ? 0.25 + 0.75 * Math.abs(Math.sin(state.t * (3 + (i % 5)) + i * 1.7)) * (0.6 + 0.4 * Math.sin(state.t * 1.3 + i)) : 0.12;
+      const v = (state.music || (sp && sp.playing)) ? 0.25 + 0.75 * Math.abs(Math.sin(state.t * (3 + (i % 5)) + i * 1.7)) * (0.6 + 0.4 * Math.sin(state.t * 1.3 + i)) : 0.12;
       const bh = Math.max(2, Math.round(v * 30));
       for (let k = 0; k < bh; k += 3) {
         ctx.fillStyle = k > 22 ? '#fbbf24' : k > 14 ? '#a3e635' : '#22c55e';
@@ -820,6 +823,7 @@
         return `${title}<div class="stats four">${items.map(([v, l]) => `<div><b>${esc(v)}</b><small>${l}</small></div>`).join('')}</div>`;
       }
       case 'clock': return `${title}<div class="clock"><small>${esc(sec.label)}</small><b data-tz="${esc(sec.tz)}">--:--</b></div>`;
+      case 'spotify': return `${title}${renderSpotifyCard()}`;
       case 'music': return `<button class="pixel-btn music-toggle">${state.music ? '❚❚ Pause music' : '▶ Play studio music'}</button>`;
       case 'image': return `${title}<figure class="media"><img src="${esc(sec.src)}" alt="${esc(sec.alt || '')}" loading="lazy">${sec.caption ? `<figcaption>${esc(sec.caption)}</figcaption>` : ''}</figure>`;
       case 'video': return `${title}<figure class="media"><video src="${esc(sec.src)}"${sec.poster ? ` poster="${esc(sec.poster)}"` : ''} autoplay muted loop playsinline preload="metadata"></video>${sec.caption ? `<figcaption>${esc(sec.caption)}</figcaption>` : ''}</figure>`;
@@ -856,6 +860,7 @@
     tick(); clearInterval(clockTimer); clockTimer = setInterval(tick, 1000);
     panel.querySelector('.close').focus({ preventScroll: true });
     if (PANEL_KEYS.includes(key)) discover(key);
+    if (key === 'music') loadSpotify();
   }
   function closePanel() {
     if (!state.panelOpen) return;
@@ -941,6 +946,47 @@
     document.getElementById('toasts').appendChild(el);
     setTimeout(() => el.classList.add('out'), 2600);
     setTimeout(() => el.remove(), 3000);
+  }
+
+  // ── Spotify (via Last.fm scrobbles): what Dev is playing now, or played last — /api/now-playing ──
+  async function loadSpotify() {
+    try {
+      const res = await fetch('/api/now-playing', { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      state.spotify = data.title ? data : null;
+      state.spotifyStatus = data.title ? 'ok' : 'empty';
+    } catch {
+      state.spotify = null;
+      state.spotifyStatus = 'error';
+    }
+    // refresh an open record-player panel so its card shows the latest song
+    if (state.panelOpen && state.panelKey === 'music') {
+      const card = panelBody.querySelector('.spotify-card');
+      if (card) card.outerHTML = renderSpotifyCard();
+    }
+  }
+  function timeAgo(iso) {
+    const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins} min ago`;
+    const h = Math.round(mins / 60);
+    if (h < 24) return `${h} hr${h === 1 ? '' : 's'} ago`;
+    const d = Math.round(h / 24);
+    return `${d} day${d === 1 ? '' : 's'} ago`;
+  }
+  function renderSpotifyCard() {
+    const sp = state.spotify;
+    if (!sp) {
+      const msg = state.spotifyStatus === 'loading' ? 'Checking what Dev is listening to…' : "Couldn't reach Spotify right now.";
+      return `<div class="spotify-card empty"><p class="note">${msg}</p></div>`;
+    }
+    const when = sp.playing ? '<span class="live">● Listening now</span>' : `Last played · ${esc(timeAgo(sp.playedAt))}`;
+    return `<div class="spotify-card">
+      ${sp.art ? `<img src="${esc(sp.art)}" alt="" width="72" height="72">` : ''}
+      <div><small>${when}</small><b>${esc(sp.title)}</b><span>${esc(sp.artist)}</span>
+      ${sp.url ? `<a href="${esc(sp.url)}" target="_blank" rel="noopener">Open in Spotify →</a>` : ''}</div>
+    </div>`;
   }
 
   // ── night & music toggles ────────────────────────────────────────────────
@@ -1195,6 +1241,7 @@
     const startNight = q.has('night') ? true : q.has('day') ? false : scheduledNight;
     setNight(startNight); state.nightAmt = startNight ? 1 : 0;
     if (!q.has('night') && !q.has('day')) setInterval(followClock, 30 * 1000);
+    loadSpotify(); setInterval(loadSpotify, 60 * 1000);
     if (q.get('panel')) openPanel(q.get('panel'));
     if (q.get('go')) setTimeout(() => goTo(WD.hotspots.find(h => h.id === q.get('go'))), 200);
     if (q.get('at')) { const [x, y] = q.get('at').split(',').map(Number); player.x = x; player.y = y; }
