@@ -829,7 +829,12 @@
           : `<img src="${esc(it.src)}" alt="${esc(it.alt || '')}" loading="lazy">`;
         return `<figure>${m}${it.caption ? `<figcaption>${esc(it.caption)}</figcaption>` : ''}</figure>`;
       }).join('')}</div>`;
-      case 'quotes': return `${title}<div class="quotes">${sec.items.map(q => `<blockquote><p>“${esc(q.text)}”</p><footer><b>${esc(q.name)}</b>${q.org ? ` · ${esc(q.org)}` : ''}</footer></blockquote>`).join('')}</div>`;
+      case 'quotes': return `${title}<div class="quotes">${sec.items.map(q => {
+        // blank lines in a quote become separate paragraphs; curly quotes wrap the whole thing
+        const paras = q.text.split(/\n\s*\n/);
+        const body = paras.map((t, i) => `<p>${i === 0 ? '“' : ''}${esc(t)}${i === paras.length - 1 ? '”' : ''}</p>`).join('');
+        return `<blockquote>${body}<footer><b>${esc(q.name)}</b>${q.org ? ` · ${esc(q.org)}` : ''}</footer></blockquote>`;
+      }).join('')}</div>`;
     }
     return '';
   }

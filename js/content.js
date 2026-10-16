@@ -94,6 +94,7 @@ window.CONTENT = {
     subtitle: 'What teammates say',
     sections: [
       { type: 'quotes', items: [
+        { text: 'We gave Dev a messy mix of ideas, screenshots, references, and “can we try this?” moments… and somehow, he turned it all into a UI we absolutely love.\n\nHe designed the entire app and website, kept everything consistent, and paid attention to details we didn’t even think about. The best part? He didn’t just make it look pretty; he made it make sense.\n\nHonestly, one of those decisions where you finish the project and think, “Yep, we picked the right person”.\n\nWorth it, having a UI/UX designer who can read our minds and bring exactly what we imagined to life.', name: 'Falguni Dangi', org: 'Partnership Manager at Easy Subscriptions Shopify App' },
         { text: 'Working with Dev has been a game-changer for our product. Their eye for detail, user-first mindset, and ability to turn complex ideas into clean, intuitive designs greatly improved our user experience.', name: 'Arvind Tiwari', org: 'NetApp' },
         { text: 'Dev is a highly reliable and creative teammate. He brings strong UI/UX expertise to the table and always ensures that designs are not only visually appealing but also user-friendly.', name: 'Ashutosh Patel', org: 'NuageBiz Tech' },
         { text: 'Dev is a pleasure to work with. While working with us he showed the ability to think outside the box and handle unforeseen challenges with creative solutions. He helped us bring our ideas to reality.', name: 'Santosh Yadav', org: 'Anubit Solutions' },
