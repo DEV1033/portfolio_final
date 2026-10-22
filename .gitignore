@@ -1,0 +1,18 @@
+# generated preview of every sprite (re-created by tools/build_assets.py)
+tools/_contact_sheet.png
+__pycache__/
+*.pyc
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# local env files (Cloudflare secrets live in the dashboard, not here)
+.env
+.env.*
+.dev.vars
+.wrangler/
+node_modules/

@@ -361,6 +361,36 @@
       c.fillText(`${ok ? GITHUB.total : '—'} this year`, 43, 139);
       c.fillText(GITHUB.streak ? `${GITHUB.streak}-day streak` : `${ok ? GITHUB.activeDays : '—'} active days`, 43, 161);
     },
+    arcadeScreen(c, o) {
+      // attract mode: marching invaders + blinking INSERT COIN; "PLAYER 1 READY" after a coin
+      screen(c, o, [23, 42, 75, 47], (x, y, w, h) => {
+        const t = state.t, playing = state.arcadeT > 0;
+        const INV = ['.#...#.', '..###..', '.#####.', '##.#.##', '#######', '#.#.#.#'];
+        const march = Math.floor(t * 2) % 8, dx = march < 4 ? march : 8 - march;
+        const cols = ['#ff6b3d', '#ffd23f', '#3fc5ff'];
+        for (let r = 0; r < 3; r++) {
+          for (let k = 0; k < 4; k++) {
+            c.fillStyle = cols[r];
+            const ix = x + 6 + dx * 2 + k * 16, iy = y + 4 + r * 9;
+            INV.forEach((row, ry) => [...row].forEach((ch, rx) => { if (ch === '#') c.fillRect(ix + rx, iy + ry, 1, 1); }));
+          }
+        }
+        // player ship + shot
+        const sx = x + w / 2 + Math.sin(t * 1.7) * 22;
+        c.fillStyle = '#5ee08a';
+        c.fillRect(sx - 3, y + h - 6, 7, 2); c.fillRect(sx - 1, y + h - 8, 3, 2);
+        c.fillStyle = '#fff';
+        c.fillRect(sx, y + h - 10 - ((t * 60) % 26), 1, 3);
+        c.font = `7px ${PIXEL_FONT}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+        if (playing ? Math.floor(t * 6) % 2 : Math.floor(t * 1.6) % 2) {
+          c.fillStyle = playing ? '#5ee08a' : '#ffd23f';
+          c.fillText(playing ? 'PLAYER 1 READY' : 'INSERT COIN', x + w / 2, y + h - 17);
+        }
+        c.fillStyle = '#e8edf7';
+        c.fillText(`HI ${String(99999 - (state.arcadeCredits || 0)).padStart(5, '0')}`, x + w / 2, y + 2.5);
+        c.textAlign = 'left';
+      });
+    },
     spinRecord(c, o) {
       if (!state.music) return;
       const cx = o.x + 57 * o.sc, cy = o.y + 33 * o.sc, a = state.t * 5;
@@ -564,6 +594,13 @@
         say(state.catPets === 1 ? 'Meet Bug, the studio cat 🐱' : state.catPets < 5 ? 'Bug purrs happily.' : 'Bug: "ok that\'s enough"', 2.5);
         return;
       case 'night': toggleNight(); return;
+      case 'arcade':
+        state.arcadeCredits = (state.arcadeCredits || 0) + 1;
+        state.arcadeT = 3;
+        sfx.coin();
+        say(['Insert coin… 🕹️', 'High score: DEV — 99,999', 'One more game. Just one.', 'Pew pew pew!'][(state.arcadeCredits - 1) % 4], 2.5);
+        openArcade();
+        return;
     }
     if (h.panel) openPanel(h.panel);
   }
@@ -679,6 +716,7 @@
     state.t += dt;
     state.nightAmt = clamp(state.nightAmt + (state.night ? dt : -dt) * 1.5, 0, 1);
     if (player.bubbleT > 0) player.bubbleT -= dt;
+    if (state.arcadeT > 0) state.arcadeT -= dt;
     player.animT += dt;
     updateCamera(dt);
 
@@ -861,6 +899,18 @@
     panel.querySelector('.close').focus({ preventScroll: true });
     if (PANEL_KEYS.includes(key)) discover(key);
     if (key === 'music') loadSpotify();
+  }
+  // the cabinet opens the mini arcade (js/arcade.js); the room pauses while it's open
+  function openArcade(start) {
+    if (!window.Arcade) return;
+    keys.clear();
+    document.querySelectorAll('#pad .pressed').forEach(b => b.classList.remove('pressed'));
+    state.panelOpen = true;
+    setTimeout(() => window.Arcade.open({
+      start,
+      beep: (f, d, type, v) => { if (!state.muted) tone(f, ac().currentTime, d, type, v); },
+      onClose: () => { state.panelOpen = false; cvs.focus(); },
+    }), 350);
   }
   function closePanel() {
     if (!state.panelOpen) return;
@@ -1052,6 +1102,7 @@
       const a = ac(), t = a.currentTime;
       [43, 47, 50, 55, 59, 67].forEach((m, i) => pluck(mtof(m), t + i * 0.035, 0.18));
     },
+    coin() { const t = ac().currentTime; tone(988, t, 0.08, 'square', 0.06); tone(1319, t + 0.08, 0.35, 'square', 0.06); },
     fanfare() { const t = ac().currentTime; [72, 76, 79, 84].forEach((m, i) => tone(mtof(m), t + i * 0.12, 0.3, 'square', 0.06)); },
   };
   function pluck(freq, t, vol) {
@@ -1243,6 +1294,7 @@
     if (!q.has('night') && !q.has('day')) setInterval(followClock, 30 * 1000);
     loadSpotify(); setInterval(loadSpotify, 60 * 1000);
     if (q.get('panel')) openPanel(q.get('panel'));
+    if (q.get('arcade')) openArcade(q.get('arcade'));
     if (q.get('go')) setTimeout(() => goTo(WD.hotspots.find(h => h.id === q.get('go'))), 200);
     if (q.get('at')) { const [x, y] = q.get('at').split(',').map(Number); player.x = x; player.y = y; }
   });

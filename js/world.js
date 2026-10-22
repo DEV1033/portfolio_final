@@ -51,6 +51,9 @@ window.WORLD = {
 
     { s: 'bottle', x: 362, y: 662, solid: [4, 56, 29, 20] },
 
+    // ── arcade corner (cabinet + stool in one image) ──
+    { id: 'arcade', s: 'arcade', x: 210, y: 372, solid: [8, 130, 104, 58], fx: 'arcadeScreen' },
+
     // ── bottom-left ──
     { s: 'plant_big', x: 52, y: 640, solid: [24, 112, 62, 35] },
     { id: 'bench_l', s: 'bench', x: 172, y: 712, solid: true, foot: 0.55 },
@@ -99,6 +102,7 @@ window.WORLD = {
     { obj: 'np', x: 1120, y: 115, r: 140, c: '140,255,160' }, // now playing
     { obj: 'win1', x: 461, y: 115, r: 150, c: '170,190,255' },  // window (moon)
     { obj: 'win2', x: 938, y: 115, r: 120, c: '170,190,255' },
+    { obj: 'arcade', x: 270, y: 437, r: 130, c: '255,110,190' }, // arcade screen
   ],
 
   // Interactive spots. rect: clickable/highlight area. at: where the player stands. face: direction.
@@ -119,6 +123,7 @@ window.WORLD = {
     { id: 'experience', obj: 'desk3', label: 'Experience', rect: [1022, 352, 206, 132], at: [1126, 566], face: 'up', panel: 'experience' },
     { id: 'reading', obj: 'shelf3', label: 'Design shelf', rect: [1120, 600, 104, 157], at: [1172, 774], face: 'up', panel: 'reading' },
     { id: 'running', obj: 'bench_l', label: 'Bench · Run log', rect: [172, 712, 106, 70], at: [312, 742], face: 'left', panel: 'running' },
+    { id: 'arcade', obj: 'arcade', label: 'Arcade', rect: [210, 372, 120, 189], at: [270, 592], face: 'up', action: 'arcade' },
     { id: 'exit', label: 'Say goodbye', rect: [584, 776, 122, 70], at: [645, 770], face: 'down', panel: 'contact' },
   ],
 };

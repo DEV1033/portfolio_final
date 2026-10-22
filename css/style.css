@@ -83,6 +83,32 @@ kbd { font-family: var(--font-head); font-size: 11px; background: #2c3555; borde
 #pad .act { background: rgba(184,86,43,.92); color: #fff6dc; }
 #pad .act:hover { background: #cf6533; }
 
+/* mini arcade */
+#arcade { background: rgba(5,8,18,.7); }
+.arcade-cab {
+  position: relative; width: min(680px, 100%); max-height: 96vh; overflow: auto;
+  background: linear-gradient(#1b1f33, #12152a); border: 4px solid #0d1120; border-radius: 14px; padding: 14px 18px 12px;
+  box-shadow: 0 0 0 4px #e0322b, 0 0 0 8px #ffc21f, 0 0 0 12px #0d1120, 0 24px 60px rgba(0,0,0,.6);
+}
+.arcade-marquee { text-align: center; font-family: var(--font-head); font-size: 18px; color: var(--gold); letter-spacing: 2px; margin: 2px 40px 10px; text-shadow: 2px 2px 0 #6b3215; }
+.arcade-bezel { background: #05070f; border: 4px solid #0d1120; border-radius: 10px; padding: 10px; box-shadow: inset 0 0 0 2px #2c3555, inset 0 0 30px rgba(63,197,255,.15); }
+#arcade-canvas { display: block; width: 100%; aspect-ratio: 4 / 3; image-rendering: pixelated; border-radius: 4px; outline: none; touch-action: none; }
+.arcade-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; user-select: none; -webkit-user-select: none; touch-action: none; }
+.arcade-stick { display: grid; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 4px; }
+.arcade-stick .u { grid-column: 2; grid-row: 1; } .arcade-stick .l { grid-column: 1; grid-row: 2; }
+.arcade-stick .d { grid-column: 2; grid-row: 2; } .arcade-stick .r { grid-column: 3; grid-row: 2; }
+.arcade-controls button {
+  border: 3px solid #0d1120; border-radius: 8px; background: #2c3555; color: var(--ink); cursor: pointer;
+  font-family: var(--font-head); font-size: 13px; box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 3px 0 #0d1120;
+  -webkit-tap-highlight-color: transparent;
+}
+.arcade-btns { display: flex; gap: 10px; align-items: center; }
+.arcade-btns .fire { width: 76px; height: 76px; border-radius: 50%; background: #e0322b; font-size: 14px; }
+.arcade-btns .back { height: 40px; padding: 0 12px; background: #3a3a1f; color: var(--gold); }
+.arcade-controls button.pressed { transform: translateY(2px); box-shadow: inset 0 -2px 0 rgba(0,0,0,.35), 0 1px 0 #0d1120; filter: brightness(1.2); }
+.arcade-help { text-align: center; color: var(--muted); font-size: 17px; margin: 10px 0 0; }
+@media (pointer: fine) { .arcade-controls { display: none; } }
+
 /* modals */
 .modal { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: rgba(10,12,24,.45); }
 .modal[hidden] { display: none; }

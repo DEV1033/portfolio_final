@@ -25,19 +25,18 @@ For the best result, serve the folder: `npx serve .` or `python -m http.server`.
 
 - 13 info spots: a progress bar tracks them, and confetti fires when all are found.
 - Pet the sleeping cat on the sofa and play the guitar.
+- The arcade cabinet opens a mini arcade with **Space Shooter** and **Snake** (`js/arcade.js`). Best scores are kept in the visitor's browser.
 - The record player toggles a synthesized lo-fi loop. All audio is generated in code; there are no sound files.
 - The floor lamp (or **N**) switches to night mode, with lamp and monitor lighting and a starry window.
 - **Menu** (top right) lists every spot, so visitors in a hurry can jump straight there.
 
 ## Assets
 
-> This repo holds only what the site needs at runtime (`index.html`, `css/`, `js/`, `assets/`, `resume.pdf`). The source atlases, character frames and `tools/build_assets.py` live in the separate pixelworld source folder. Rebuild `assets/sprites.*` there and copy them here.
-
 `tools/build_assets.py` slices the two generated atlases into transparent sprites and packs them into `assets/sprites.png` + `assets/sprites.js`:
 
 - `pixel-portfolio-tileset/…/studio-tileset-master.png` for furniture, decor and room pieces.
 - `character-movement-pngs/…/character-movement-atlas-reference.png` for every hero frame.
-- `Pixel Sofa with Sleeping Cat.png` for the sofa (sized in `READY_IMAGES`).
+- `Pixel Sofa with Sleeping Cat.png` for the sofa and `Retro Pixel Arcade Cabinet and Stool.png` for the arcade (both sized in `READY_IMAGES`).
 - `Pixel Art TRUSTYY Workstation 1.png` / `2.png` for the two project desks. Each chair's lower half is cut out as a separate sprite so the character sorts correctly around it.
 
 The provided per-frame character PNGs had their dark pixels (hair, eyes, outlines) keyed out, so the frames are re-cut from the atlas instead.
@@ -50,27 +49,9 @@ python tools/build_assets.py
 
 It also writes `tools/_contact_sheet.png` so you can eyeball every sprite.
 
-## Spotify via Last.fm (record player)
-
-The record player shows what Dev is playing on Spotify right now, or the last song played. Spotify's own Web API needs a Premium account, so the song comes from **Last.fm**, which Spotify scrobbles to. `functions/api/now-playing.js` is a Cloudflare Pages Function, served at `/api/now-playing`. It keeps the API key server-side, caches the answer at the edge for 30–60 s, and returns only title, artist, album art and a Spotify search link.
-
-One-time setup:
-
-1. Sign up at [last.fm](https://www.last.fm). Under **Settings → Applications**, connect **Spotify** so every song gets scrobbled.
-2. Create a free API key at [last.fm/api/account/create](https://www.last.fm/api/account/create). Any app name works and the callback URL can be blank.
-3. Cloudflare dashboard → **Workers & Pages** → this project → **Settings → Variables and Secrets**: add `LASTFM_API_KEY` (type **Secret**) and `LASTFM_USERNAME` (type **Text**) for **Production**, then redeploy.
-
-Until they're set, the panel just says it couldn't reach Spotify.
-
 ## Deploy
 
-Hosted on **Cloudflare Pages**, connected to this GitHub repo:
-
-- Workers & Pages → Create → Pages → **Connect to Git** → pick the repo.
-- Framework preset: **None**. Build command: *(leave empty)*. Build output directory: `/`.
-- Every push to `main` redeploys. `functions/` is picked up automatically as Pages Functions.
-
-Clean URLs work out of the box. With no `404.html`, Cloudflare serves `index.html` for unknown paths, so old links like `/about` land in the studio. At runtime the site needs `index.html`, `css/`, `js/`, `assets/`, `resume.pdf` and `functions/`.
+It's a static site. Drop the folder on GitHub Pages, Netlify or Vercel. Only `index.html`, `css/`, `js/` and `assets/` are needed at runtime.
 
 ## Debug flags
 

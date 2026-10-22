@@ -49,6 +49,28 @@
     <div id="hint">WASD / arrows to walk · Shift to run · E to interact · or click anything</div>
   </div>
 
+  <!-- mini arcade (opened from the arcade cabinet) -->
+  <div id="arcade" class="modal" hidden>
+    <div class="arcade-cab" role="dialog" aria-modal="true" aria-label="Pixel arcade">
+      <button class="close" aria-label="Close arcade">✕</button>
+      <div class="arcade-marquee"><span>👾</span> PIXEL ARCADE <span>👾</span></div>
+      <div class="arcade-bezel"><canvas id="arcade-canvas" tabindex="0"></canvas></div>
+      <div class="arcade-controls">
+        <div class="arcade-stick">
+          <button data-akey="arrowup" class="u" aria-label="Up">▲</button>
+          <button data-akey="arrowleft" class="l" aria-label="Left">◀</button>
+          <button data-akey="arrowdown" class="d" aria-label="Down">▼</button>
+          <button data-akey="arrowright" class="r" aria-label="Right">▶</button>
+        </div>
+        <div class="arcade-btns">
+          <button data-aback class="back" aria-label="Back to menu">MENU</button>
+          <button data-akey=" " class="fire" aria-label="Fire / start">FIRE</button>
+        </div>
+      </div>
+      <p class="arcade-help">Arrows / WASD to move · Space to fire or start · Esc to go back</p>
+    </div>
+  </div>
+
   <!-- quick menu -->
   <div id="menu" class="modal" hidden>
     <div class="sheet">
@@ -70,6 +92,7 @@
   <script src="assets/sprites.js"></script>
   <script src="js/content.js"></script>
   <script src="js/world.js"></script>
+  <script src="js/arcade.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>
