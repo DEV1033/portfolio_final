@@ -402,32 +402,10 @@
   };
 
   // ── live GitHub data ─────────────────────────────────────────────────────
-  const GITHUB = { user: CONTENT.github.username, status: 'loading', days: [], total: 0, streak: 0, activeDays: 0, best: null, repos: null, followers: null };
+  const GITHUB = window.GitHubData.create(CONTENT.github.username); // fetch + stats live in js/github.js
   const GH_COLORS = ['#18243a', '#0e4429', '#006d32', '#26a641', '#39d353'];
   async function loadGitHub() {
-    if (!GITHUB.user) { GITHUB.status = 'error'; return; }
-    try {
-      const r = await fetch(`https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(GITHUB.user)}?y=last`);
-      if (!r.ok) throw new Error(r.status);
-      const d = await r.json();
-      const today = new Date().toISOString().slice(0, 10);
-      GITHUB.days = (d.contributions || []).filter(c => c.date <= today);
-      GITHUB.total = d.total?.lastYear ?? GITHUB.days.reduce((a, c) => a + c.count, 0);
-      GITHUB.activeDays = GITHUB.days.filter(c => c.count > 0).length;
-      GITHUB.best = GITHUB.days.reduce((b, c) => (!b || c.count > b.count ? c : b), null);
-      // current streak: consecutive active days ending today (or yesterday, if today is still empty)
-      let i = GITHUB.days.length - 1, streak = 0;
-      if (i >= 0 && GITHUB.days[i].count === 0) i--;
-      while (i >= 0 && GITHUB.days[i].count > 0) { streak++; i--; }
-      GITHUB.streak = streak;
-      GITHUB.status = GITHUB.days.length ? 'ok' : 'error';
-    } catch (e) {
-      GITHUB.status = 'error';
-    }
-    try {
-      const r = await fetch(`https://api.github.com/users/${encodeURIComponent(GITHUB.user)}`);
-      if (r.ok) { const u = await r.json(); GITHUB.repos = u.public_repos; GITHUB.followers = u.followers; }
-    } catch (e) { /* repo count is optional */ }
+    await window.GitHubData.load(GITHUB);
     if (state.panelOpen && state.panelKey === 'github') openPanel('github'); // refresh if open
   }
 
@@ -828,15 +806,11 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   let clockTimer = null;
 
-  function renderSection(sec) {
-    const title = sec.title ? `<h3>${esc(sec.title)}</h3>` : '';
+  // generic blocks come from js/panels.js (shared with normal mode); these are the
+  // live, game-only section types
+  const CUSTOM_SECTIONS = Object.fromEntries(['contrib', 'github-stats', 'clock', 'spotify', 'music'].map(t => [t, renderLive]));
+  function renderLive(sec, title) {
     switch (sec.type) {
-      case 'text': return `${title}<p>${esc(sec.body)}</p>`;
-      case 'list': return `${title}<ul class="list">${sec.items.map(i => `<li>${esc(i)}</li>`).join('')}</ul>`;
-      case 'tags': return `${title}<div class="tags">${sec.items.map(i => `<span>${esc(i)}</span>`).join('')}</div>`;
-      case 'links': return `${title}<div class="links">${sec.items.map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener"><b>${esc(l.label)}</b><small>${esc(l.note || '')}</small><i>→</i></a>`).join('')}</div>`;
-      case 'stats': return `${title}<div class="stats">${sec.items.map(s => `<div><b>${esc(s.value)}</b><small>${esc(s.label)}</small></div>`).join('')}</div>`;
-      case 'timeline': return `${title}<ol class="timeline">${sec.items.map(t => `<li><small>${esc(t.when)}</small><b>${esc(t.what)}</b><p>${esc(t.note || '')}</p></li>`).join('')}</ol>`;
       case 'contrib': {
         if (GITHUB.status === 'loading') return `${title}<p class="note">Loading contributions…</p>`;
         if (GITHUB.status === 'error') return `${title}<p class="note">Could not reach GitHub right now. Try the link below.</p>`;
@@ -863,20 +837,6 @@
       case 'clock': return `${title}<div class="clock"><small>${esc(sec.label)}</small><b data-tz="${esc(sec.tz)}">--:--</b></div>`;
       case 'spotify': return `${title}${renderSpotifyCard()}`;
       case 'music': return `<button class="pixel-btn music-toggle">${state.music ? '❚❚ Pause music' : '▶ Play studio music'}</button>`;
-      case 'image': return `${title}<figure class="media"><img src="${esc(sec.src)}" alt="${esc(sec.alt || '')}" loading="lazy">${sec.caption ? `<figcaption>${esc(sec.caption)}</figcaption>` : ''}</figure>`;
-      case 'video': return `${title}<figure class="media"><video src="${esc(sec.src)}"${sec.poster ? ` poster="${esc(sec.poster)}"` : ''} autoplay muted loop playsinline preload="metadata"></video>${sec.caption ? `<figcaption>${esc(sec.caption)}</figcaption>` : ''}</figure>`;
-      case 'gallery': return `${title}<div class="gallery${sec.tall ? ' tall' : ''}">${sec.items.map(it => {
-        const m = /\.(mp4|webm)$/i.test(it.src)
-          ? `<video src="${esc(it.src)}" autoplay muted loop playsinline preload="metadata"></video>`
-          : `<img src="${esc(it.src)}" alt="${esc(it.alt || '')}" loading="lazy">`;
-        return `<figure>${m}${it.caption ? `<figcaption>${esc(it.caption)}</figcaption>` : ''}</figure>`;
-      }).join('')}</div>`;
-      case 'quotes': return `${title}<div class="quotes">${sec.items.map(q => {
-        // blank lines in a quote become separate paragraphs; curly quotes wrap the whole thing
-        const paras = q.text.split(/\n\s*\n/);
-        const body = paras.map((t, i) => `<p>${i === 0 ? '“' : ''}${esc(t)}${i === paras.length - 1 ? '”' : ''}</p>`).join('');
-        return `<blockquote>${body}<footer><b>${esc(q.name)}</b>${q.org ? ` · ${esc(q.org)}` : ''}</footer></blockquote>`;
-      }).join('')}</div>`;
     }
     return '';
   }
@@ -884,10 +844,7 @@
     const c = CONTENT[key];
     if (!c) return;
     state.panelKey = key;
-    let extra = '';
-    panelBody.innerHTML = `
-      <header><span class="icon">${esc(c.icon || '◆')}</span><div><h2>${esc(c.title)}</h2>${c.subtitle ? `<small>${esc(c.subtitle)}</small>` : ''}</div></header>
-      <div class="content">${c.sections.map(renderSection).join('')}${extra}</div>`;
+    panelBody.innerHTML = window.PanelUI.renderPanel(c, CUSTOM_SECTIONS);
     panel.hidden = false;
     requestAnimationFrame(() => panel.classList.add('open'));
     state.panelOpen = true;

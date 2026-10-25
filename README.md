@@ -4,6 +4,11 @@ A walkable pixel-art studio. Visitors explore the room, click objects and open p
 
 ## Run it
 
+The site has two modes, chosen on the landing page (`index.html`):
+
+- **Normal mode** (`normal.html`): a calm, single-column portfolio page. Built by `js/normal.js` from the same `js/content.js` the game uses, styled by `css/normal.css`.
+- **Game mode** (`game.html`): the walkable pixel studio.
+
 Open `index.html` in a browser. It also works over `file://`.
 For the best result, serve the folder: `npx serve .` or `python -m http.server`.
 
@@ -13,12 +18,14 @@ For the best result, serve the folder: `npx serve .` or `python -m http.server`.
 
 | What | Where |
 |---|---|
-| Name, bio, projects, links, skills, experience | `js/content.js`: every panel's text lives here |
+| Name, bio, projects, links, skills, experience | `js/content.js`: every panel's text lives here, shared by both modes |
+| Normal-mode hero, work cards, company/tool logos | the `normal` block at the end of `js/content.js` |
 | GitHub account shown on the board & panel (live data) | `username` in the `github` section of `js/content.js` |
 | Resume download | put `resume.pdf` next to `index.html` |
 | Photos, showcase & motion videos, phone screens | `assets/media/`, referenced from `js/content.js` (`image`, `video`, `gallery`, `quotes` sections) |
 | Object positions, hotspots, lamp glows | `js/world.js` |
 | TRUSTYY / GOODDEX desks | `Pixel Art TRUSTYY Workstation 1.png` / `2.png`. Replace the images and re-run `python tools/build_assets.py` |
+| Pixel buttons, pop-up sheet, panel blocks (shared by both modes) | `css/pixel-ui.css` + `js/panels.js` |
 | Colours & fonts of the UI | `css/style.css` (`:root` variables) |
 
 ## Things to do in the room
@@ -51,7 +58,7 @@ It also writes `tools/_contact_sheet.png` so you can eyeball every sprite.
 
 ## Deploy
 
-It's a static site. Drop the folder on GitHub Pages, Netlify or Vercel. Only `index.html`, `css/`, `js/` and `assets/` are needed at runtime.
+It's a static site. Drop the folder on GitHub Pages, Netlify or Vercel. Only `index.html`, `normal.html`, `game.html`, `css/`, `js/`, `assets/`, `favicon.ico` and `resume.pdf` are needed at runtime.
 
 ## Debug flags
 

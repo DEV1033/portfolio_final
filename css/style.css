@@ -22,19 +22,7 @@ canvas#game.hovering, a, .links a, .menu-list button { cursor: url('../assets/cu
 button { font: inherit; color: inherit; }
 kbd { font-family: var(--font-head); font-size: 11px; background: #2c3555; border: 2px solid #4b5680; border-bottom-width: 4px; border-radius: 4px; padding: 1px 6px; color: var(--ink); }
 
-/* pixel button */
-.pixel-btn {
-  font-family: var(--font-head); font-size: 13px; letter-spacing: .5px;
-  background: var(--panel-2); color: var(--ink); cursor: url('../assets/cursor/pizza-bite.png') 2 2, pointer;
-  border: 3px solid #0d1120; border-radius: 6px; padding: 8px 12px;
-  box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.08), 0 3px 0 #0d1120;
-  transition: transform .08s, background .15s;
-}
-.pixel-btn:hover { background: #2e3a5e; }
-.pixel-btn:active { transform: translateY(2px); box-shadow: inset 0 -2px 0 rgba(0,0,0,.35), 0 1px 0 #0d1120; }
-.pixel-btn.icon { width: 42px; padding: 8px 0; }
-.pixel-btn.on { background: #3a3a1f; color: var(--gold); }
-.pixel-btn:focus-visible, .menu-list button:focus-visible, .links a:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.menu-list button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
 /* HUD */
 #hud { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s .4s; z-index: 5; }
@@ -109,50 +97,11 @@ kbd { font-family: var(--font-head); font-size: 11px; background: #2c3555; borde
 .arcade-help { text-align: center; color: var(--muted); font-size: 17px; margin: 10px 0 0; }
 @media (pointer: fine) { .arcade-controls { display: none; } }
 
-/* modals */
-.modal { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: rgba(10,12,24,.45); }
-.modal[hidden] { display: none; }
-.sheet {
-  position: relative; width: min(560px, 100%); max-height: min(80vh, 720px); overflow: auto;
-  background: var(--panel); border: 4px solid #0d1120; border-radius: 10px;
-  box-shadow: 0 0 0 4px var(--wood), 0 0 0 8px #0d1120, 0 24px 60px rgba(0,0,0,.55);
-  transform: translateY(14px) scale(.97); opacity: 0; transition: transform .18s, opacity .18s;
-}
-#panel.open .sheet, #menu:not([hidden]) .sheet { transform: none; opacity: 1; }
-.sheet header { display: flex; gap: 12px; align-items: center; padding: 16px 52px 14px 18px; background: var(--panel-2); border-bottom: 3px solid #0d1120; position: sticky; top: 0; z-index: 1; }
-.sheet header .icon { font-size: 26px; width: 44px; height: 44px; display: grid; place-items: center; background: #0d1120; border-radius: 6px; color: var(--gold); flex: none; }
-.sheet h2 { font-family: var(--font-head); font-size: 20px; margin: 0; color: var(--gold); font-weight: 400; }
-.sheet header small { font-size: 19px; color: var(--green); }
-.close { position: absolute; top: 14px; right: 14px; z-index: 2; width: 34px; height: 34px; border-radius: 6px; border: 3px solid #0d1120; background: #b8432b; cursor: url('../assets/cursor/pizza-bite.png') 2 2, pointer; font-family: var(--font-head); font-size: 14px; box-shadow: inset 0 -3px 0 rgba(0,0,0,.3); }
-.close:hover { background: #d0533a; }
-.content { padding: 6px 20px 20px; font-size: 21px; line-height: 1.2; }
-.content h3 { font-family: var(--font-head); font-size: 13px; color: var(--muted); text-transform: uppercase; margin: 18px 0 8px; font-weight: 400; }
-.content p { margin: 12px 0; }
-.content .note { color: var(--muted); }
-.list { margin: 8px 0; padding: 0; list-style: none; }
-.list li { padding: 6px 0 6px 18px; position: relative; border-bottom: 1px dashed #333d60; }
-.list li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tags span { background: #0d1120; border: 2px solid #3a4670; padding: 2px 10px; border-radius: 4px; font-size: 19px; }
-.links { display: grid; gap: 8px; margin-top: 12px; }
-.links a { display: flex; align-items: baseline; gap: 10px; text-decoration: none; color: var(--ink); background: #0d1120; border: 2px solid #3a4670; border-radius: 6px; padding: 8px 12px; transition: border-color .15s, transform .1s; }
-.links a:hover { border-color: var(--gold); transform: translateX(3px); }
-.links b { font-weight: 400; color: var(--gold); }
-.links small { color: var(--muted); font-size: 18px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-.stats div { background: #0d1120; border: 2px solid #3a4670; border-radius: 6px; padding: 10px; text-align: center; }
-.stats b { display: block; font-family: var(--font-head); font-size: 20px; color: var(--green); font-weight: 400; }
-.stats small { color: var(--muted); font-size: 18px; }
-.timeline { list-style: none; padding: 0; margin: 12px 0 0; border-left: 3px solid #3a4670; }
-.timeline li { padding: 0 0 16px 16px; position: relative; }
-.timeline li::before { content: ''; position: absolute; left: -8px; top: 4px; width: 10px; height: 10px; background: var(--gold); border: 2px solid #0d1120; }
-.timeline small { color: var(--green); font-size: 18px; display: block; }
-.timeline b { font-weight: 400; color: var(--gold); }
-.timeline p { margin: 2px 0 0; color: var(--muted); }
+/* game-specific panel bits (shared pop-up + content blocks live in pixel-ui.css) */
+#menu:not([hidden]) .sheet { transform: none; opacity: 1; }
 .contrib { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; gap: 3px; margin-top: 14px; }
 .contrib i { aspect-ratio: 1; border-radius: 2px; background: #0d1120; }
 .contrib .l1 { background: #0e4429; } .contrib .l2 { background: #006d32; } .contrib .l3 { background: #26a641; } .contrib .l4 { background: #39d353; }
-.stats.four { grid-template-columns: repeat(4, 1fr); }
 .contrib-total { margin: 14px 0 6px !important; color: var(--muted); }
 .contrib-total b { color: var(--green); font-weight: 400; }
 .contrib-scroll { overflow-x: auto; padding-bottom: 4px; }
@@ -190,23 +139,6 @@ kbd { font-family: var(--font-head); font-size: 11px; background: #2c3555; borde
 .spotify-card a { color: #1ed760; font-size: 17px; text-decoration: none; margin-top: 4px; }
 .spotify-card a:hover { text-decoration: underline; }
 
-/* media blocks: images, videos, galleries (photos / phone screens / motion), testimonial quotes */
-.media { margin: 12px 0; background: #0d1120; border: 3px solid #0d1120; border-radius: 6px; box-shadow: 0 0 0 2px #3a4670; overflow: hidden; }
-.media img, .media video { display: block; width: 100%; height: auto; }
-.media img { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 70%; }
-.media figcaption, .gallery figcaption { font-size: 17px; color: var(--muted); padding: 6px 10px; }
-.gallery { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 10px; margin-top: 8px; scroll-snap-type: x mandatory; }
-.gallery figure { flex: none; width: 70%; margin: 0; background: #0d1120; border: 3px solid #0d1120; border-radius: 6px; box-shadow: 0 0 0 2px #3a4670; overflow: hidden; scroll-snap-align: start; }
-.gallery img, .gallery video { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
-.gallery.tall figure { width: 38%; }
-.gallery.tall img { aspect-ratio: 627 / 1361; object-fit: cover; }
-.gallery::-webkit-scrollbar { height: 8px; }
-.gallery::-webkit-scrollbar-thumb { background: #3a4670; border-radius: 4px; }
-.quotes { display: grid; gap: 10px; margin-top: 12px; }
-.quotes blockquote { margin: 0; background: #0d1120; border: 2px solid #3a4670; border-left: 6px solid var(--gold); border-radius: 6px; padding: 10px 14px; }
-.quotes p { margin: 0 0 8px; }
-.quotes footer { font-size: 18px; color: var(--muted); }
-.quotes b { font-weight: 400; color: var(--gold); }
 
 .menu-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: 16px; }
 .menu-list button { display: flex; gap: 8px; align-items: center; text-align: left; background: #0d1120; border: 2px solid #3a4670; border-radius: 6px; padding: 10px; cursor: url('../assets/cursor/pizza-bite.png') 2 2, pointer; font-size: 20px; }
@@ -226,12 +158,9 @@ kbd { font-family: var(--font-head); font-size: 11px; background: #2c3555; borde
   .avatar { width: 34px; height: 40px; }
   .progress { width: 120px; }
   .buttons { top: auto; bottom: 16px; right: 12px; flex-direction: column; }
-  #btn-menu span { display: none; }
+  #btn-menu span, #btn-normal span { display: none; }
   #hint { bottom: 136px; font-size: 16px; }
   #pad button { width: 46px; height: 46px; }
   .dpad { grid-template-columns: repeat(3, 46px); grid-template-rows: repeat(2, 46px); }
   #toasts { bottom: 110px; }
-  .stats { grid-template-columns: 1fr 1fr 1fr; }
-  .stats b { font-size: 15px; }
-  .stats.four { grid-template-columns: 1fr 1fr; }
 }

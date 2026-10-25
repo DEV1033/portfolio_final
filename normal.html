@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dev Chaudhary</title>
+  <meta name="description" content="Dev Chaudhary, product designer. Curious about how interfaces are made and why they work.">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#fafafa">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/pixel-ui.css">
+  <link rel="stylesheet" href="css/normal.css">
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <a class="brand" href="index.html">DEV CHAUDHARY</a>
+      <nav class="modes" aria-label="Portfolio mode">
+        <span class="on" aria-current="page"><i class="ico-page" aria-hidden="true">▤</i>NORMAL MODE</span>
+        <a href="game.html"><i class="ico-hero" aria-hidden="true"></i>GAME MODE</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- built from js/content.js by js/normal.js -->
+    </main>
+
+    <footer class="foot">
+      <p>Designed &amp; built by Dev, with a little help from Claude.</p>
+      <a class="pixel-btn" href="game.html">▶ Enter game mode</a>
+    </footer>
+  </div>
+
+  <!-- project pop-up: the same pixel sheet the game's panels use -->
+  <div id="panel" class="modal" hidden>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <button class="close" aria-label="Close">✕</button>
+      <div id="panel-body"></div>
+    </div>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/github.js"></script>
+  <script src="js/panels.js"></script>
+  <script src="js/normal.js"></script>
+</body>
+</html>

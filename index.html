@@ -4,95 +4,151 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Dev Chaudhary</title>
-  <meta name="description" content="An interactive pixel-art studio portfolio. Walk around, click things, pet the cat.">
+  <meta name="description" content="Dev Chaudhary, product designer. Read the portfolio, or walk around my pixel studio.">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#161b2e">
+  <meta name="theme-color" content="#fafafa">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Silkscreen&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/normal.css">
+  <style>
+    .choose { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
+    .choose .page { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 860px; }
+    .welcome { margin: auto 0; padding: 48px 0 24px; }
+    .welcome .avatar { width: 88px; height: 88px; }
+    .welcome h1 { font-family: var(--head); font-weight: 700; font-size: 30px; letter-spacing: -.02em; color: var(--ink); margin: 28px 0 6px; line-height: 1.25; }
+    .welcome .sub { color: var(--muted); margin: 0 0 36px; font-size: 17px; }
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .mode {
+      display: flex; flex-direction: column; text-decoration: none; border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--line); background: var(--surface); transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+    }
+    .mode:hover, .mode:focus-visible { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(17,18,20,.10); border-color: #d8d9dc; outline: none; }
+    .mode .art { height: 190px; position: relative; overflow: hidden; }
+    .mode .info { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .mode h2 { margin: 0; font: 500 13px var(--mono); letter-spacing: .04em; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
+    .mode h2 kbd { font: 500 11px var(--mono); color: var(--faint); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+    .mode p { margin: 0; color: var(--muted); font-size: 15px; }
+    .mode .go { margin-top: auto; padding-top: 12px; color: var(--ink); font-size: 15px; font-weight: 500; }
+    .mode .go::after { content: ' →'; display: inline-block; transition: transform .2s; }
+    .mode:hover .go::after { transform: translateX(4px); }
+
+    /* normal mode preview: a tiny calm page */
+    .art.calm { background: #f3f3f5; padding: 26px 34px 0; }
+    .mini { background: #fff; border-radius: 10px 10px 0 0; height: 100%; padding: 18px 20px; box-shadow: 0 8px 26px rgba(17,18,20,.08); }
+    .mini img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: 50% 42%; }
+    .mini i { display: block; height: 7px; border-radius: 4px; background: #e9e9ec; margin-top: 9px; }
+    .mini i.h { height: 10px; width: 62%; background: #2a2c31; margin-top: 14px; }
+    .mini i.h2 { height: 10px; width: 80%; background: #2a2c31; margin-top: 6px; }
+    .mini i.w9 { width: 92%; } .mini i.w7 { width: 70%; } .mini i.w5 { width: 46%; }
+
+    /* game mode preview: the pixel studio */
+    .art.game { background: #161b2e; }
+    .art.game canvas { width: 100%; height: 100%; image-rendering: pixelated; display: block; }
+    .mode.gamecard h2 { font-family: 'Silkscreen', var(--mono); }
+    /* "Recommended" tag in the game's pixel style (gold on navy, chunky shadow) */
+    .mode h2 .title { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .rec {
+      display: inline-block; font: 400 10px 'Silkscreen', var(--mono); letter-spacing: .5px; color: #ffd36a;
+      background: #3a3a1f; border: 2px solid #0d1120; border-radius: 5px; padding: 3px 7px;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08), 0 2px 0 #0d1120;
+      animation: rec-bob 2.4s ease-in-out infinite;
+    }
+    @keyframes rec-bob { 50% { transform: translateY(-2px); } }
+    @media (prefers-reduced-motion: reduce) { .rec { animation: none; } }
+    .mode.gamecard { border-color: #e9c46a; box-shadow: 0 0 0 1px #ffd36a55; }
+
+    .note { text-align: center; color: var(--faint); font-size: 14px; margin: 28px 0 0; }
+    @media (max-width: 640px) {
+      .modes-grid { grid-template-columns: 1fr; }
+      .welcome { padding-top: 36px; }
+      .welcome h1 { font-size: 24px; }
+      .mode .art { height: 150px; }
+      .mode h2 kbd { display: none; }
+    }
+  </style>
 </head>
-<body>
-  <canvas id="game" tabindex="0" aria-label="Pixel studio — walk with WASD or arrow keys, press E to interact"></canvas>
+<body class="choose">
+  <div class="page">
+    <header class="top">
+      <span class="brand">DEV CHAUDHARY</span>
+    </header>
 
-  <!-- HUD -->
-  <div id="hud">
-    <div class="who">
-      <div class="avatar"></div>
-      <div class="who-text">
-        <b id="profile-name"></b>
-        <small id="profile-role"></small>
-        <div class="progress-row"><div class="progress"><div id="progress-bar"></div></div><small id="progress-text" class="progress-text"></small></div>
+    <main class="welcome">
+      <img class="avatar reveal in" src="assets/media/dev-avatar.webp" alt="Dev Chaudhary" width="88" height="88">
+      <h1>Hey, I'm Dev.</h1>
+      <p class="sub">Product designer. How would you like to look around?</p>
+
+      <div class="modes-grid">
+        <a class="mode" href="normal.html" id="go-normal">
+          <div class="art calm" aria-hidden="true">
+            <div class="mini">
+              <img src="assets/media/dev-avatar.webp" alt="">
+              <i class="h"></i><i class="h2"></i>
+              <i class="w9"></i><i class="w7"></i><i class="w9"></i><i class="w5"></i>
+            </div>
+          </div>
+          <div class="info">
+            <h2>NORMAL MODE <kbd>N</kbd></h2>
+            <p>A calm, readable page: my work, experience and what people say. About a 3-minute read.</p>
+            <span class="go">Enter normal mode</span>
+          </div>
+        </a>
+
+        <a class="mode gamecard" href="game.html" id="go-game">
+          <div class="art game"><canvas id="preview" width="240" height="120" aria-hidden="true"></canvas></div>
+          <div class="info">
+            <h2><span class="title">GAME MODE <span class="rec">★ Recommended</span></span> <kbd>G</kbd></h2>
+            <p>Walk around my pixel studio, open the desks, pet the cat, play the arcade.</p>
+            <span class="go">Enter game mode</span>
+          </div>
+        </a>
       </div>
-    </div>
-    <div class="buttons">
-      <button class="pixel-btn" id="btn-menu" title="Quick menu (skip the walking)">☰ <span>Menu</span></button>
-      <button class="pixel-btn icon" id="btn-night" title="Night mode (N)">☾</button>
-      <button class="pixel-btn icon" id="btn-music" title="Music (M)">♪</button>
-      <button class="pixel-btn icon on" id="btn-sound" title="Sound effects">🔊</button>
-    </div>
-    <!-- on-screen controls: click/hold or touch; they also light up when the keyboard is used -->
-    <div id="pad" aria-label="Movement controls">
-      <div class="dpad">
-        <button class="up" data-key="w" aria-label="Walk up (W / ↑)"><span>▲</span><kbd>W</kbd></button>
-        <button class="left" data-key="a" aria-label="Walk left (A / ←)"><span>◀</span><kbd>A</kbd></button>
-        <button class="down" data-key="s" aria-label="Walk down (S / ↓)"><span>▼</span><kbd>S</kbd></button>
-        <button class="right" data-key="d" aria-label="Walk right (D / →)"><span>▶</span><kbd>D</kbd></button>
-      </div>
-      <div class="actions">
-        <button class="act" id="pad-e" data-key="e" aria-label="Interact (E)">E<small>use</small></button>
-        <button class="run" data-key="shift" aria-label="Hold to run (Shift)">⇧<small>run</small></button>
-      </div>
-    </div>
-    <div id="hint">WASD / arrows to walk · Shift to run · E to interact · or click anything</div>
+      <p class="note">You can switch modes any time.</p>
+    </main>
   </div>
-
-  <!-- mini arcade (opened from the arcade cabinet) -->
-  <div id="arcade" class="modal" hidden>
-    <div class="arcade-cab" role="dialog" aria-modal="true" aria-label="Pixel arcade">
-      <button class="close" aria-label="Close arcade">✕</button>
-      <div class="arcade-marquee"><span>👾</span> PIXEL ARCADE <span>👾</span></div>
-      <div class="arcade-bezel"><canvas id="arcade-canvas" tabindex="0"></canvas></div>
-      <div class="arcade-controls">
-        <div class="arcade-stick">
-          <button data-akey="arrowup" class="u" aria-label="Up">▲</button>
-          <button data-akey="arrowleft" class="l" aria-label="Left">◀</button>
-          <button data-akey="arrowdown" class="d" aria-label="Down">▼</button>
-          <button data-akey="arrowright" class="r" aria-label="Right">▶</button>
-        </div>
-        <div class="arcade-btns">
-          <button data-aback class="back" aria-label="Back to menu">MENU</button>
-          <button data-akey=" " class="fire" aria-label="Fire / start">FIRE</button>
-        </div>
-      </div>
-      <p class="arcade-help">Arrows / WASD to move · Space to fire or start · Esc to go back</p>
-    </div>
-  </div>
-
-  <!-- quick menu -->
-  <div id="menu" class="modal" hidden>
-    <div class="sheet">
-      <header><span class="icon">☰</span><div><h2>Quick menu</h2><small>In a hurry? Pick a spot and I'll walk there.</small></div><button class="close" aria-label="Close">✕</button></header>
-      <div class="menu-list"></div>
-    </div>
-  </div>
-
-  <!-- content panel -->
-  <div id="panel" class="modal" hidden>
-    <div class="sheet" role="dialog" aria-modal="true">
-      <button class="close" aria-label="Close">✕</button>
-      <div id="panel-body"></div>
-    </div>
-  </div>
-
-  <div id="toasts"></div>
 
   <script src="assets/sprites.js"></script>
-  <script src="js/content.js"></script>
-  <script src="js/world.js"></script>
-  <script src="js/arcade.js"></script>
-  <script src="js/game.js"></script>
+  <script>
+    // keyboard shortcuts: N = normal, G = game
+    addEventListener('keydown', e => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key.toLowerCase();
+      if (k === 'n') location.href = 'normal.html';
+      if (k === 'g') location.href = 'game.html';
+    });
+
+    // game card preview: the hero walking back and forth across the studio floor
+    (() => {
+      const S = window.SPRITES, cvs = document.getElementById('preview');
+      if (!S || !cvs) return;
+      const ctx = cvs.getContext('2d'), W = cvs.width, H = cvs.height;
+      const sheet = new Image();
+      sheet.src = 'assets/sprites.png';
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const draw = (name, x, y, sc) => { const s = S[name]; if (s) ctx.drawImage(sheet, s.x, s.y, s.w, s.h, x, y, s.w * sc, s.h * sc); };
+      let x = 40, dir = 1, t = 0, last = performance.now();
+      function frame(now) {
+        const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
+        ctx.imageSmoothingEnabled = false;
+        // wall + baseboard + plank floor, all from the studio tileset
+        ctx.fillStyle = '#ecd6ad'; ctx.fillRect(0, 0, W, 44);
+        for (let bx = 0; bx < W; bx += S.baseboard.w * 0.5) draw('baseboard', bx, 38, 0.5);
+        for (let fy = 46; fy < H; fy += S.floor.h * 0.5) for (let fx = -10; fx < W; fx += S.floor.w * 0.5) draw('floor', fx, fy, 0.5);
+        draw('window_wide', 18, 4, 0.22);
+        draw('plant_a', 196, 34, 0.4);
+        draw('arcade', 150, 18, 0.32);
+        if (!still) { x += dir * 26 * dt; if (x > 132) dir = -1; if (x < 20) dir = 1; }
+        const f = still ? 'hero_idle_down' : `hero_walk_${dir > 0 ? 'right' : 'left'}_${1 + Math.floor(t * 8) % 4}`;
+        const s = S[f], sc = 0.42;
+        ctx.fillStyle = 'rgba(30,15,5,.25)'; ctx.beginPath(); ctx.ellipse(x, 104, 9, 3, 0, 0, 7); ctx.fill();
+        draw(f, Math.round(x - s.ax * sc), Math.round(104 - s.ay * sc), sc);
+        if (!still) requestAnimationFrame(frame);
+      }
+      sheet.onload = () => requestAnimationFrame(frame);
+    })();
+  </script>
 </body>
 </html>

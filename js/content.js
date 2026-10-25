@@ -195,4 +195,37 @@ window.CONTENT = {
       ] },
     ],
   },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  //  NORMAL MODE (normal.html). Most of the page is built from the sections
+  //  above (experience, trustyy, gooddex, reading, ideas, running, skills,
+  //  contact); this block only holds what the calm page needs on top.
+  // ───────────────────────────────────────────────────────────────────────────
+  normal: {
+    photo: 'assets/media/dev-avatar.webp',
+    headline: ['Product Designer.', 'Curious about how interfaces are made and why they work.'],
+    intro: [
+      "I'm a self-taught product designer. I found design through frontend development in my 2nd year of college, when one question wouldn't leave me alone: how are these interfaces made?",
+      "Since then I've designed apps, websites and internal tools for startups and Shopify merchants. These days I build the front-end too, with AI-assisted workflows.",
+      'Good projects usually start with a simple hello. So…',
+    ],
+    message: { label: 'Message me', href: 'https://www.linkedin.com/in/dev-chaudhary-7983a822a' },
+    // company → website, used to fetch each logo automatically (no site = lettered badge)
+    companies: {
+      'Easycomm Innovations': 'easycomm.io',
+      'Goodspace AI': 'goodspace.ai',
+      'GeeksforGeeks': 'geeksforgeeks.org',
+    },
+    // recent work cards, in order. `panel` reuses that section's video + text.
+    work: [
+      { panel: 'trustyy', caption: 'Shopify app revamp, Trustyy', tint: 'linear-gradient(135deg, #fff1d6, #ffe3ec)' },
+      { panel: 'gooddex', caption: 'AI candidate search, Goodex', tint: 'linear-gradient(135deg, #e3ecff, #eef6ff)' },
+      { screens: 'reading', caption: 'Clinic & check-in apps, VyanEx', tint: 'linear-gradient(135deg, #e6f7f3, #eaf2ff)' },
+    ],
+    // tools grid: name → website for the logo
+    tools: {
+      Figma: 'figma.com', Claude: 'claude.ai', Gemini: 'gemini.google.com', LottieFiles: 'lottiefiles.com',
+      Framer: 'framer.com', 'VS Code': 'code.visualstudio.com', GitHub: 'github.com',
+    },
+  },
 };
