@@ -117,7 +117,7 @@ section .label::before {
 /* the hero's head, cropped from the game's sprite sheet */
 .ico-hero {
   width: 18px; height: 18px; border-radius: 3px; image-rendering: pixelated;
-  background: url('../assets/sprites.png') no-repeat -587px -70px / 614px auto;
+  background: url('../assets/media/normal/hero-head.png') center / 18px 18px no-repeat; /* cut from the sprite sheet: 3 KB instead of 2.5 MB */
 }
 .modes a:focus-visible { outline: 3px solid var(--px-gold); outline-offset: 2px; }
 

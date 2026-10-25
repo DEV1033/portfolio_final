@@ -8,7 +8,16 @@
   const esc = window.PanelUI.esc; // shared with the game (js/panels.js)
   const sec = (key, type) => (C[key]?.sections || []).find(s => s.type === type);
   const secs = (key, type) => (C[key]?.sections || []).filter(s => s.type === type);
-  const favicon = domain => `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
+  // Normal mode loads lighter copies of the media (assets/media/normal/); the game keeps the originals.
+  const LIGHT = 'assets/media/normal/';
+  const favicon = domain => `${LIGHT}logos/${domain}.png`; // logos are stored locally (no third-party requests)
+  const LIGHT_VIDEOS = ['trustyy', 'goodex', 'motion-1', 'motion-2', 'motion-3', 'motion-4', 'motion-5'];
+  const vidName = src => (src.match(/([^/]+)\.mp4$/) || [])[1];
+  const lite = src => (LIGHT_VIDEOS.includes(vidName(src)) ? `${LIGHT}${vidName(src)}.mp4` : src);
+  const posterFor = (src, given) => given || (LIGHT_VIDEOS.includes(vidName(src)) && vidName(src) !== 'goodex' ? `${LIGHT}${vidName(src)}-poster.webp` : '');
+  // swap a panel's videos for the light copies before it is shown in the pop-up
+  const liteSection = s => s.type === 'video' ? { ...s, src: lite(s.src), poster: posterFor(s.src, s.poster) }
+    : s.type === 'gallery' ? { ...s, items: s.items.map(i => (/\.mp4$/.test(i.src) ? { ...i, src: lite(i.src) } : i)) } : s;
   const initials = name => name.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const BADGE_COLORS = ['#e8590c', '#1c7ed6', '#2f9e44', '#ae3ec9', '#f08c00', '#0c8599', '#d6336c'];
   const colorFor = name => BADGE_COLORS[[...name].reduce((a, c) => a + c.charCodeAt(0), 0) % BADGE_COLORS.length];
@@ -25,7 +34,7 @@
     const resume = sec('experience', 'links')?.items?.[0];
     return `<div class="hero reveal">
       <div class="hello">
-        <img class="avatar" src="${esc(N.photo)}" alt="Dev Chaudhary" width="140" height="140">
+        <img class="avatar" src="${esc(N.photo)}" alt="Dev Chaudhary" width="140" height="140" fetchpriority="high" decoding="async">
         <span class="px-bubble">${esc(hello)}</span>
       </div>
       <h1>${N.headline.map(l => `<span>${esc(l)}</span>`).join('')}</h1>
@@ -103,7 +112,7 @@
         const v = sec(w.panel, 'video');
         return `<article>
           <div class="card" style="background:${w.tint}" data-open="${esc(w.panel)}" role="button" tabindex="0" aria-label="Open the ${esc(C[w.panel].title)} case study">
-            <video src="${esc(v.src)}"${v.poster ? ` poster="${esc(v.poster)}"` : ''} muted loop playsinline preload="metadata" data-autoplay aria-label="${esc(w.caption)}"></video>
+            <video src="${esc(lite(v.src))}" poster="${esc(posterFor(v.src, v.poster))}" muted loop playsinline preload="none" data-autoplay aria-label="${esc(w.caption)}"></video>
           </div>
           <p class="caption">${esc(w.caption)}</p>
           ${meta(w.panel, 'Case study')}
@@ -128,7 +137,7 @@
     const g = secs('reading', 'gallery').find(x => x.items.some(i => /\.mp4$/.test(i.src)));
     if (!g) return '';
     return section('MOTION EXPERIMENTS', `<p class="lede">Small interactions and motion studies, mostly made for fun.</p>
-      <div class="motion">${g.items.map(i => `<video src="${esc(i.src)}" muted loop playsinline preload="none" data-autoplay></video>`).join('')}</div>`);
+      <div class="motion">${g.items.map(i => `<video src="${esc(lite(i.src))}" poster="${esc(posterFor(i.src))}" muted loop playsinline preload="none" data-autoplay></video>`).join('')}</div>`);
   }
 
   // ── kind words ──
@@ -188,7 +197,7 @@
     const c = C[key];
     if (!c) return;
     opener = document.activeElement;
-    panelBody.innerHTML = window.PanelUI.renderPanel(c);
+    panelBody.innerHTML = window.PanelUI.renderPanel({ ...c, sections: c.sections.map(liteSection) });
     panel.querySelector('.sheet').setAttribute('aria-label', c.title);
     panel.hidden = false;
     document.body.style.overflow = 'hidden';
