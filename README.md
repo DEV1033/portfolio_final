@@ -25,6 +25,7 @@ For the best result, serve the folder: `npx serve .` or `python -m http.server`.
 | Photos, showcase & motion videos, phone screens | `assets/media/`, referenced from `js/content.js` (`image`, `video`, `gallery`, `quotes` sections) |
 | Object positions, hotspots, lamp glows | `js/world.js` |
 | TRUSTYY / GOODDEX desks | `Pixel Art TRUSTYY Workstation 1.png` / `2.png`. Replace the images and re-run `python tools/build_assets.py` |
+| Normal-mode footer: 3D instant camera that prints a card from a visitor's photo; drag the paper to peel it off, then download | `js/polaroid3d.js` (three.js model, PBR materials, page-curl peel) + `js/polaroid.js` (photo input, card drawing, popup, download; also the CSS fallback camera) + `css/polaroid.css`. Card text: `CARD_TEXT` in `js/polaroid.js`. Test link: `normal.html?polaroid=demo` |
 | Pixel buttons, pop-up sheet, panel blocks (shared by both modes) | `css/pixel-ui.css` + `js/panels.js` |
 | Colours & fonts of the UI | `css/style.css` (`:root` variables) |
 

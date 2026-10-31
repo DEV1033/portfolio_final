@@ -11,10 +11,11 @@
   <meta name="theme-color" content="#fafafa">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&family=IBM+Plex+Mono:wght@500;600&family=Caveat:wght@600&family=Nunito:wght@800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/media/dev-avatar.webp" fetchpriority="high">
   <link rel="stylesheet" href="css/pixel-ui.css">
   <link rel="stylesheet" href="css/normal.css">
+  <link rel="stylesheet" href="css/polaroid.css">
 </head>
 <body>
   <div class="page">
@@ -30,9 +31,26 @@
       <!-- built from js/content.js by js/normal.js -->
     </main>
 
-    <footer class="foot">
-      <p>Designed &amp; built by Dev, with a little help from Claude.</p>
-      <a class="pixel-btn" href="game.html">▶ Enter game mode</a>
+    <footer>
+      <!-- Polaroid camera: visitors add a photo, a card prints out, and they peel it off to download (js/polaroid.js, js/polaroid3d.js) -->
+      <section class="pol-wrap reveal" id="polaroid" aria-labelledby="pol-title">
+        <h2 class="label" id="pol-title">LEAVE A POLAROID</h2>
+        <p class="lede">Add a photo, then press the red button on the camera. Your card prints out of the camera, ready to save.</p>
+        <form class="pol-form" autocomplete="off">
+          <div class="pol-photo">
+            <input type="file" id="pol-file" accept="image/*" hidden>
+            <button type="button" class="pixel-btn" id="pol-pick">＋ Add photo</button>
+            <img id="pol-thumb" alt="" hidden>
+            <small>Your photo stays in your browser. Nothing is uploaded.</small>
+          </div>
+        </form>
+        <div class="pol-stage" id="pol-stage"></div>
+        <p class="pol-actions pol-hint" hidden>Grab the paper and pull it to tear it off.</p>
+      </section>
+      <div class="foot">
+        <p>Designed &amp; built by Dev, with a little help from Claude.</p>
+        <a class="pixel-btn" href="game.html">▶ Enter game mode</a>
+      </div>
     </footer>
   </div>
 
@@ -48,5 +66,9 @@
   <script src="js/github.js"></script>
   <script src="js/panels.js"></script>
   <script src="js/normal.js"></script>
+  <script src="js/polaroid.js"></script>
+  <!-- three.js for the 3D camera (falls back to the CSS camera if WebGL isn't available) -->
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+  <script src="js/polaroid3d.js"></script>
 </body>
 </html>
