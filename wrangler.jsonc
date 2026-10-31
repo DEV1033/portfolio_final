@@ -1,0 +1,17 @@
+// Cloudflare deploy config for devchaudhary.com (the "portfolio-final" Worker).
+// Without this file, `npx wrangler deploy` has to guess how to deploy the repo.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio-final",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    // the site is the repo root; files that aren't part of it are listed in .assetsignore
+    "directory": ".",
+    "binding": "ASSETS",
+    // only API calls run the Worker; every other request is served straight from the files
+    "run_worker_first": ["/api/*"]
+  },
+  // keep the variables set in the Cloudflare dashboard (LASTFM_USERNAME) on every deploy
+  "keep_vars": true
+}

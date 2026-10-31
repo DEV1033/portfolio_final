@@ -61,6 +61,12 @@ It also writes `tools/_contact_sheet.png` so you can eyeball every sprite.
 
 It's a static site. Drop the folder on GitHub Pages, Netlify or Vercel. Only `index.html`, `normal.html`, `game.html`, `css/`, `js/`, `assets/`, `favicon.ico` and `resume.pdf` are needed at runtime.
 
+**devchaudhary.com** is the Cloudflare Worker `portfolio-final`, deployed by Cloudflare Workers Builds (`npx wrangler deploy`) on every push to `main`:
+
+- `wrangler.jsonc` serves the repo root as static files and runs `worker/index.js` only for `/api/*`.
+- `.assetsignore` keeps non-website files (the Worker code, README, config) from being published.
+- `/api/now-playing` (the record player's Spotify card) is `worker/now-playing.js`. It needs `LASTFM_API_KEY` (secret) and `LASTFM_USERNAME` (variable) in Cloudflare → Workers & Pages → portfolio-final → Settings → Variables and Secrets.
+
 ## Debug flags
 
 Add these to the URL: `?night`, `?panel=about`, `?go=cat`, `?debug` (shows colliders and hotspot standing points).

@@ -1,7 +1,7 @@
-// Cloudflare Pages Function: GET /api/now-playing
+// GET /api/now-playing (called from worker/index.js)
 // Dev's current song, or the last one played, via Last.fm (Spotify scrobbles to Last.fm;
 // Spotify's own Web API needs a Premium account). Returns a small public JSON object.
-// Settings: Cloudflare dashboard → Workers & Pages → this project → Settings → Variables and Secrets
+// Settings: Cloudflare dashboard → Workers & Pages → portfolio-final → Settings → Variables and Secrets
 //   LASTFM_API_KEY   (Secret) — free key from https://www.last.fm/api/account/create
 //   LASTFM_USERNAME  (Text)   — Dev's Last.fm username
 
@@ -51,11 +51,11 @@ async function lookup(env) {
   }, 200, playing ? 30 : 60);
 }
 
-export async function onRequestGet({ request, env, waitUntil }) {
-  // short edge cache so every visitor doesn't hit Last.fm
+export async function nowPlaying(request, env, ctx) {
+  // short edge cache so every visitor doesn't hit Last.fm (best effort: a cache error never breaks the route)
   const cache = caches.default;
   const cacheKey = new Request(new URL(request.url).toString(), { method: 'GET' });
-  const hit = await cache.match(cacheKey);
+  const hit = await cache.match(cacheKey).catch(() => null);
   if (hit) return hit;
 
   let res;
@@ -64,6 +64,6 @@ export async function onRequestGet({ request, env, waitUntil }) {
   } catch {
     res = json({ error: 'last.fm request failed' }, 502);
   }
-  if (res.status === 200) waitUntil(cache.put(cacheKey, res.clone()));
+  if (res.status === 200) ctx.waitUntil(cache.put(cacheKey, res.clone()).catch(() => {}));
   return res;
 }

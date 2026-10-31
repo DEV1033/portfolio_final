@@ -1,0 +1,9 @@
+# Files in the repo that are not part of the website (not uploaded as static assets)
+worker/
+wrangler.jsonc
+.assetsignore
+.gitignore
+README.md
+.git/
+node_modules/
+.wrangler/
