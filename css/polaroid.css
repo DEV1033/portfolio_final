@@ -1,6 +1,5 @@
 /* Footer Polaroid camera (normal mode only), modelled on the white Polaroid Now+.
    Coordinates come from the reference photo scaled to a 480px-wide drawing. */
-.pol-wrap { margin-top: 96px; }
 .pol-wrap .label::before { display: none; }   /* no section number in the footer */
 
 /* ── form ── */
@@ -12,7 +11,7 @@
   border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; resize: none; width: 100%;
   transition: border-color .2s, box-shadow .2s;
 }
-.pol-field input:focus, .pol-field textarea:focus { outline: none; border-color: #b9bcc2; box-shadow: 0 0 0 3px rgba(17,18,20,.06); }
+.pol-field input:focus, .pol-field textarea:focus { outline: none; border-color: #4a4a50; box-shadow: 0 0 0 3px rgba(255,255,255,.06); }
 .pol-photo { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .pol-photo small { color: var(--muted); font-size: 13px; }
 .pol-photo img[hidden] { display: none; }
@@ -123,7 +122,7 @@
    Only transform/opacity animate (see js/polaroid.js), each on its own GPU layer. */
 .pol-peel { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 20px; }
 .pol-peel[hidden] { display: none; }
-.pol-peel-bg { position: absolute; inset: 0; background: rgba(17,18,20,.62); will-change: opacity; }
+.pol-peel-bg { position: absolute; inset: 0; background: rgba(0,0,0,.78); will-change: opacity; }
 .pol-peel-card { position: relative; display: grid; justify-items: center; gap: 18px; }
 .pol-peel-photo { will-change: transform, opacity; transform-origin: 50% 50%; backface-visibility: hidden; contain: layout paint; }
 .pol-peel-photo canvas { display: block; width: min(340px, 78vw); height: auto; max-height: 74vh; object-fit: contain; }

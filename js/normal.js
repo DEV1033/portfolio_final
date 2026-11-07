@@ -30,12 +30,11 @@
   function hero() {
     const intro = N.intro.map(p => `<p>${esc(p)}</p>`).join('');
     // the character's greeting from the room, trimmed to its first two sentences
-    const hello = C.profile.greeting.split(/(?<=[.!?])\s+/).slice(0, 2).join(' ');
     const resume = sec('experience', 'links')?.items?.[0];
     return `<div class="hero reveal">
+      <video class="hero-ascii" src="assets/media/normal/ascii-magic.mp4" poster="assets/media/normal/ascii-magic-poster.webp" muted loop playsinline preload="none" data-autoplay aria-hidden="true"></video>
       <div class="hello">
-        <img class="avatar" src="${esc(N.photo)}" alt="Dev Chaudhary" width="140" height="140" fetchpriority="high" decoding="async">
-        <span class="px-bubble">${esc(hello)}</span>
+        <img class="avatar" src="${esc(N.photo)}" alt="Dev Chaudhary" width="116" height="116" fetchpriority="high" decoding="async">
       </div>
       <h1>${N.headline.map(l => `<span>${esc(l)}</span>`).join('')}</h1>
       <div class="intro">${intro}</div>
@@ -185,7 +184,7 @@
     return section('SAY HELLO', `<p class="lede">${esc(body)}</p><div class="rows">${rows}</div>`, 'contact');
   }
 
-  main.innerHTML = [hero(), github(), experience(), work(), motion(), kindWords(), running(), tools(), contact()].join('');
+  main.innerHTML = [hero(), github(), experience(), work(), motion(), kindWords(), running(), tools(), contact()].filter(Boolean).join('<div class="sep" aria-hidden="true"></div>');
 
   window.GitHubData.load(window.GitHubData.create(C.github.username)).then(fillGitHub);
 

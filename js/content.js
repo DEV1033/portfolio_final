@@ -203,7 +203,7 @@ window.CONTENT = {
   // ───────────────────────────────────────────────────────────────────────────
   normal: {
     photo: 'assets/media/dev-avatar.webp',
-    headline: ['Product Designer.', 'Curious about how interfaces are made and why they work.'],
+    headline: ['Dev Chaudhary.'],
     intro: [
       "I'm a self-taught product designer. I found design through frontend development in my 2nd year of college, when one question wouldn't leave me alone: how are these interfaces made?",
       "Since then I've designed apps, websites and internal tools for startups and Shopify merchants. These days I build the front-end too, with AI-assisted workflows.",
@@ -218,9 +218,9 @@ window.CONTENT = {
     },
     // recent work cards, in order. `panel` reuses that section's video + text.
     work: [
-      { panel: 'trustyy', caption: 'Shopify app revamp, Trustyy', tint: 'linear-gradient(135deg, #fff1d6, #ffe3ec)' },
-      { panel: 'gooddex', caption: 'AI candidate search, Goodex', tint: 'linear-gradient(135deg, #e3ecff, #eef6ff)' },
-      { screens: 'reading', caption: 'Clinic & check-in apps, VyanEx', tint: 'linear-gradient(135deg, #e6f7f3, #eaf2ff)' },
+      { panel: 'trustyy', caption: 'Shopify app revamp, Trustyy', tint: 'linear-gradient(135deg, #2a2114, #2a161e)' },
+      { panel: 'gooddex', caption: 'AI candidate search, Goodex', tint: 'linear-gradient(135deg, #141c30, #16232f)' },
+      { screens: 'reading', caption: 'Clinic & check-in apps, VyanEx', tint: 'linear-gradient(135deg, #12261f, #152033)' },
     ],
     // tools grid: name → website for the logo
     tools: {

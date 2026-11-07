@@ -14,10 +14,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Silkscreen&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/normal.css">
   <style>
+    /* normal.css is dark; the landing page stays light */
+    :root {
+      color-scheme: light;
+      --bg: #fafafa; --surface: #ffffff; --placeholder: #e9e9ec; --ink: #111214; --text: #3d3f44;
+      --muted: #7d8087; --faint: #a3a6ac; --line: #e7e7e9; --label: #8a8c91; --accent: #111214;
+      --rule: rgba(17, 18, 20, .12); --tick: rgba(17, 18, 20, .22); --tick-soft: rgba(17, 18, 20, .10); --grid: rgba(17, 18, 20, .035);
+    }
+    .top { background: rgba(250, 250, 250, .55); border-color: rgba(255, 255, 255, .7); box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 0 0 1px rgba(17,18,20,.04); }
+    /* faint grid behind the landing page */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 24px 24px; background-position: center top;
+      -webkit-mask-image: radial-gradient(ellipse 70% 90% at 50% 30%, #000 35%, transparent 80%);
+      mask-image: radial-gradient(ellipse 70% 90% at 50% 30%, #000 35%, transparent 80%);
+    }
     .choose { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
     .choose .page { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 860px; }
     .welcome { margin: auto 0; padding: 48px 0 24px; }
-    .welcome .avatar { width: 88px; height: 88px; }
+    .welcome .avatar { width: 88px; height: 88px; border-radius: 50%; }
     .welcome h1 { font-family: var(--head); font-weight: 700; font-size: 30px; letter-spacing: -.02em; color: var(--ink); margin: 28px 0 6px; line-height: 1.25; }
     .welcome .sub { color: var(--muted); margin: 0 0 36px; font-size: 17px; }
     .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }

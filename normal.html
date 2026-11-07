@@ -8,7 +8,7 @@
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#fafafa">
+  <meta name="theme-color" content="#090909">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&family=Manrope:wght@600;700&family=Pixelify+Sans:wght@400;600&family=Silkscreen&family=VT323&family=IBM+Plex+Mono:wght@500;600&family=Caveat:wght@600&family=Nunito:wght@800&display=swap" rel="stylesheet">
@@ -32,6 +32,7 @@
     </main>
 
     <footer>
+      <div class="sep" aria-hidden="true"></div>
       <!-- Polaroid camera: visitors add a photo, a card prints out, and they peel it off to download (js/polaroid.js, js/polaroid3d.js) -->
       <section class="pol-wrap reveal" id="polaroid" aria-labelledby="pol-title">
         <h2 class="label" id="pol-title">LEAVE A POLAROID</h2>
@@ -47,6 +48,7 @@
         <div class="pol-stage" id="pol-stage"></div>
         <p class="pol-actions pol-hint" hidden>Grab the paper and pull it to tear it off.</p>
       </section>
+      <div class="sep" aria-hidden="true"></div>
       <div class="foot">
         <p>Designed &amp; built by Dev, with a little help from Claude.</p>
         <a class="pixel-btn" href="game.html">▶ Enter game mode</a>
@@ -66,6 +68,7 @@
   <script src="js/github.js"></script>
   <script src="js/panels.js"></script>
   <script src="js/normal.js"></script>
+  <script src="js/sounds.js"></script>
   <script src="js/polaroid.js"></script>
   <!-- three.js for the 3D camera (falls back to the CSS camera if WebGL isn't available) -->
   <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
