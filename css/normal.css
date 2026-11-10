@@ -235,6 +235,23 @@ img[src*="framer.com"] { filter: invert(1); }
 .foot p { margin: 0; }
 .foot a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--faint); }
 
+/* swarm build: named cursors draw each section as it scrolls in (js/swarm.js) */
+.swarm main :is(section, .hero).reveal:not(.sw-go):not(.built) > * { opacity: 0; }
+.swarm main :is(section, .hero).reveal:not(.built) .sw-t:not(.sw-on) { opacity: 0; }
+.sw-on { animation: sw-in .45s ease backwards; }
+@keyframes sw-in { from { opacity: 0; } }
+.sw-layer { position: absolute; top: 0; left: 0; width: 0; height: 0; z-index: 4; pointer-events: none; }
+.sw-cur { position: absolute; top: 0; left: 0; will-change: transform; transition: opacity .5s; }
+.sw-cur svg { display: block; margin: -1px 0 0 -1px; fill: var(--c); stroke: #fff; stroke-width: 1.2; stroke-linejoin: round; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .5)); transform-origin: 1px 1px; transition: transform .1s; }
+.sw-cur.down svg { transform: scale(.85); }
+.sw-cur span { position: absolute; left: 14px; top: 18px; background: var(--c); color: #fff; font: 600 11px/1 var(--body); padding: 4px 7px; border-radius: 3px 9px 9px 9px; white-space: nowrap; }
+.sw-cur.gone { opacity: 0; }
+.sw-sel { position: absolute; top: 0; left: 0; border: 1px solid var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); transition: opacity .45s; }
+.sw-sel i { position: absolute; left: 50%; top: 100%; transform: translate(-50%, 6px); background: var(--c); color: #fff; font: 500 10px/1 var(--mono); font-style: normal; padding: 3px 5px; border-radius: 3px; white-space: nowrap; }
+.sw-sel.done { opacity: 0; }
+.sw-caret { display: inline-block; width: 1.5px; height: 1em; background: var(--ink); vertical-align: -2px; margin-left: 1px; animation: sw-blink .8s steps(1) infinite; }
+@keyframes sw-blink { 50% { opacity: 0; } }
+
 /* gentle reveal on scroll */
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity: 1; transform: none; }

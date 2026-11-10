@@ -39,6 +39,9 @@
     src.start();
   }
 
+  // js/swarm.js plays these for its cursors; nothing queues up while sound is still locked
+  window.NormalSounds = { play(name) { const b = { tick, press, release }[name]; if (b && ctx.state === 'running') play(b); } };
+
   const wake = () => { if (ctx.state === 'suspended') ctx.resume(); };
   addEventListener('keydown', wake, { capture: true, passive: true });
   addEventListener('touchend', wake, { capture: true, passive: true });
